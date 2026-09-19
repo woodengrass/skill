@@ -3,8 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- reporter reader-template: fill NAV, PDFS and <title>, save as workspace index.html -->
-<!-- reporter reader-template: fill NAV, PDFS, <title> and home block, save as workspace index.html -->
+<!-- reporter reader-template: fill __TITLE__, __NAV__, __PDFS__, __HOME__, save as workspace index.html -->
 <title>__TITLE__</title>
 <style>
 :root{--bg:#f5f5f5;--card:#fff;--ink:#222;--line:#ddd;--acc:#1a73e8;--accbg:#e8f0fe;--warn:#fef7e0;--code:#f0f0f0;--prebg:#263238;--preink:#e0e0e0}
@@ -33,7 +32,7 @@ article code{background:var(--code);padding:1px 6px;border-radius:4px;font-size:
 article pre{background:var(--prebg);color:var(--preink);padding:14px;border-radius:6px;overflow:auto}
 article pre code{background:none;color:inherit;padding:0}
 article blockquote{border-left:4px solid #f9ab00;background:var(--warn);margin:12px 0;padding:8px 16px}
-.docdate{text-align:right;font-size:.78em;opacity:.55;margin-bottom:2px}
+.docdate{text-align:right;font-size:.78em;opacity:.55;margin:-8px 0 14px}
 article a{color:var(--acc)}mark{background:#ffeb3b;color:#000}
 article a.cite{display:inline-block;min-width:20px;height:20px;line-height:20px;text-align:center;font-size:.72em;
   background:var(--accbg);border:1px solid var(--acc);border-radius:10px;padding:0 5px;margin:0 2px;text-decoration:none}
@@ -95,8 +94,8 @@ article details ul{max-height:420px;overflow-y:auto}
 <script src="libs/echarts.min.js"></script>
 <script>
 // ---------- 目錄 ----------
-const NAV=/*__NAV__: fill like [["Sec",[["Title","dir/file.mdx"]]],...] */[];
-const PDFS=/*__PDFS__*/[];
+const NAV=/*__NAV__: [["Sec",[["Title","dir/file.mdx"]]],...] */[];
+const PDFS=/*__PDFS__: [["Title","path/file.pdf"]] */[];
 const FLAT=[];NAV.forEach(([sec,items])=>items.forEach(([t,p])=>FLAT.push({sec,t,p})));
 // ---------- 側欄 ----------
 const nav=document.getElementById('nav'),view=document.getElementById('view');
@@ -142,6 +141,8 @@ function inline(s){
 }
 let hid=0;
 function renderMD(src){
+  src=src.replace(/^\uFEFF/,'');
+  src=src.replace(/^---\n(?:.*\n)*?---(\n|$)/,'');
   hid=0;const lines=src.replace(/\r/g,'').split('\n'),out=[];let i=0;
   const isSep=r=>/^\|?[\s:|-]+\|?[\s:|-]*$/.test(r)&&r.includes('-');
   const head=(lv,t)=>'<h'+lv+' id="h'+(hid)+'">'+inline(t)+'<a class="anc" href="javascript:void(0)" onclick="document.getElementById(\'h'+(hid)+'\').scrollIntoView()">#</a></h'+lv+'>'+(hid++,'');

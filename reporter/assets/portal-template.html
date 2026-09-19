@@ -111,7 +111,16 @@ async function main(){
       (c.note?'<div class="chartnote">'+esc(c.note)+'</div>':'')+'</div>').join('')+'</div>'+
     '<h2>章節</h2><div class="chapters">'+(META.chapters||[]).map(c=>
       '<a href="'+esc(c.path)+'"><b>'+esc(c.t)+'</b><small>'+esc(c.d||'')+'</small></a>').join('')+'</div>'+
+    '<h2>缺口與未決</h2><div id="gaps"><p>載入中…</p></div>'+
     '<footer>事實以專章原文為準，輿情僅供參考。</footer>';
+  try{
+    const gr=await fetch('gaps.json');
+    if(gr.ok){
+      const gaps=await gr.json();
+      document.getElementById('gaps').innerHTML='<ul>'+gaps.map(g=>
+        '<li>'+esc(g.item||'')+'（'+esc(g.status||'')+'）</li>').join('')+'</ul>';
+    }else{document.getElementById('gaps').innerHTML='<p>無缺口紀錄。</p>'}
+  }catch(e){document.getElementById('gaps').innerHTML='<p>無缺口紀錄。</p>'}
   draw();
 }
 main();

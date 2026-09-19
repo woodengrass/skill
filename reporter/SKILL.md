@@ -1,34 +1,39 @@
 ---
 name: reporter
-description: Use ONLY when the user explicitly requests reporter via /reporter or by naming reporter. Do NOT auto-load for general coding, debugging, or file edits. One-shot pipeline from topic to browsable report site: breadth/depth dials, 5 waves plus incremental updates, MDX files plus in-site reader and portal.
+description: Use ONLY when the user explicitly requests reporter via /reporter or by naming reporter. Do NOT auto-load for general coding, debugging, or file edits. Takes a complex question, routes reasoning, builds traceable evidence, and ships a browsable report site.
 ---
 
 # reporter
 
-一次跑完，不等人。
+> Reporter takes a complex question, determines what kind of reasoning it requires, builds a traceable evidence model, stress-tests it, and turns it into the clearest form for human understanding.
+
+定位：不是新聞生成器、不是 BBC 模仿器、不是 Deep Research、不是固定格式報告。Research model 決定怎麼想，Narrative model 決定怎麼讓人懂，Visual model 決定哪些關係不只靠文字講。三者分開，呈現格式不反過來決定研究方法。
 
 ## 啟動
 
 - 題目必填，一句話。
-- 第一題問廣度（低／中／高），第二題問深度（低／中／高）。兩題問完不再問。
-- 廣度＝方向數量：低3-4片只cover主幹／中5-8片主幹加兩側／高10片以上連邊角都收。
-- 深度＝每片量＋輪次：低10-20則一波收工／中20-50則擴一次／高50則以上擴到達標。
-- 預設：事實型廣中深中；輿情型廣中深高；混合型廣高深中；不計成本廣高深高。
+- 第一題問語言（繁體中文→zh-Hant／简体中文→zh-Hans／English→en），寫進 `report-meta.json`。
+- 第二題問廣度（低／中／高），第三題問深度（低／中／高）。三題問完不再問。
+- 廣度＝方向數量（低3-4／中5-8／高10+）；深度＝每片量＋輪次（低10-20一波／中20-50擴一次／高50+擴到達標）。
 
 ## 管線
 
-W1方向 → W2分片採集 → W3擴大 → W4缺口 → W5驗證＋總報告 → W6增量更新，收尾固定動作。細節見 `references/orchestration.md`。
+W0路由（`routing.md`）→ W1方向 → W2分片採集 → W3擴大 → W4缺口 → W5驗證 → 總報告 → W6增量更新。細節見 `references/orchestration.md`。
 
 ## 層索引
 
 - `orchestration.md`：波次、quota、停搜、熔斷、反注入、git歷史。
-- `evidence.md`：Claim→Evidence→Origin、出處獨立性、來源1-5級。
-- `verification.md`：引用鎖定、entailment查核、數字查核、紅隊。
+- `routing.md`：W0輸出格式、source-map 穩定 ID。
+- `reasoning-models.md`：13 種研究模型定義。
+- `narrative-models.md`、`visual-models.md`：敘事與視覺路由。
+- `evidence.md`：Claim→Evidence→Origin、出處獨立性、來源分級。
+- `verification.md`＋`data-verification.md`：查核與數字解讀。
+- `editorial-standards.md`：按模型審稿、強弱約束分級。
 - `writing.md`：寫作鐵律、敘事、標題數字、frontmatter、來源寫法。
 - `presentation.md`：閱讀器、入口頁、meta/gaps/source-map、圖表。
 
-## 鐵律
+## 最高鐵律
 
-- 正文只留結果；研究過程metadata永不進正文；認知不確定性只出現在固定位置（節尾信心行、核心爭議、未決問題、`gaps.json`）。
-- omo原生：並行＋免費便宜模型＋todowrite＋task_id續跑；oracle／ultrabrain／metis／momus預設全關。
-- 英文目錄與檔名；覆蓋不新增；相同規則只認各層文件定義，不複述。
+- Strong constraints on truth；weak constraints on storytelling。
+- 正文只留結果；過程 metadata 永不進正文；不確定性只進固定位置。
+- 同一規則只有一個 authoritative definition，其他文件用引用指向它。

@@ -15,6 +15,7 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 ```json
 {
   "title": "題目", "date": "查證基準日", "verdict": "結論句",
+  "lang": "zh-Hant",
   "summary": [{"k": "維度", "v": "一句判斷", "d": "關鍵數字"}],
   "score": 82,
   "kpis": [{"n": "數字", "l": "標籤"}],
@@ -24,6 +25,18 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 ```
 
 含執行摘要卡、完善度分數條、KPI、圖表、章節卡。`gaps.json`放缺口陣列（`[{item, status}]`，status限待補／已放棄／下版追），入口讀它渲染缺口區，正文不出現。兩檔機器寫機器讀。
+
+## 呈現模式（同一證據核多視圖，不要全開）
+
+Quick（5分鐘核心）、Deep（完整）、Evidence（Claim→Evidence→Origin）、Timeline（事件演變）、Disagreement（爭議與未決）、Updates（相對上次改變了什麼）。不要所有題目顯示所有tab，按 `routing.yaml` 的 presentation 段開關。
+
+## Story／Dossier 分離
+
+長篇敘事另有 story 呈現（適合 explainer／investigation／evolution／mechanism），研究卷宗走 dossier（適合 feasibility／comparison／policy）。同一研究可同時生成兩者。
+
+## 分數顯示規則
+
+完善度分數只放內部／debug，不對讀者顯示百分比。讀者優先看到：資料截止日期、主要證據來源、原始來源比例、關鍵 unresolved、重要缺口、right of reply、更新與更正紀錄。
 
 ## 圖表圍欄（`chart` JSON）
 

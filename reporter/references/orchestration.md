@@ -1,4 +1,16 @@
-# Orchestration（五波管線）
+# Orchestration（五波管線＋W0路由）
+
+## W0 路由（先判型再動工）
+
+輸出 `research/routing.yaml`：primary／supporting／overlays、narrative_pattern、required_artifacts、verification 開關、presentation 開關。格式與可選值見 `routing.md`。判型看認知操作不看關鍵字；研究中判型錯誤允許重調並記錄證據，避免 sunk-cost。
+
+## Question Tree（機器中間件）
+
+`research/questions.jsonl`：每題 question_id／parent／text／importance（load_bearing 與否）／status／claims／opens。用來追蹤回答、餵 narrative 的 question cascade、找跳步與缺口。
+
+## 模型 Artifact（只生成 Router 選中的）
+
+question_tree 必備；其餘按需：causal.json（nodes／edges 帶 relation＋confidence＋claims）、options.json、system.json、timeline.json、scenarios.json。不要全題全生成。
 
 ## W1 方向清單
 
@@ -6,7 +18,7 @@
 
 ## W2 按片採集
 
-每片一路並行 background task，用免費或便宜模型。每路prompt必含：目標、產出檔路徑、條目格式、數量下限、來源優先順序（見 `evidence.md`）、誠實缺口回報。研究方法、來源、報告結構由agent依題目自選，不硬性規定。收成後逐檔計數，未達下限加搜；登入牆反爬拿不到的，寫缺口不偽造連結。
+每片一路並行 background task，用免費或便宜模型。每路prompt必含：目標、產出檔路徑、條目格式、數量下限、語言（讀meta lang，全文統一，禁混用簡繁）、來源優先順序（見 `evidence.md`）、誠實缺口回報。研究方法、來源、報告結構由agent依題目自選，不硬性規定。收成後逐檔計數，未達下限加搜；登入牆反爬拿不到的，寫缺口不偽造連結。
 
 ### 反注入條款（每路研究prompt必備）
 
