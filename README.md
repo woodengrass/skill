@@ -2,9 +2,10 @@
 
 自寫自用 skills。
 
-## Skills
+## 目錄
 
-- **reporter**：輸入題目、選廣深，一次產出全面研究報告（MDX文件集＋站內閱讀器＋入口頁）。
+- [reporter](./reporter/)：給它一個題目，選廣度和深度，一次產出全面研究報告。
+  - 依賴：OhMyOpenCode；閱讀器需本機 Python；不需付費服務。
 
 ## 安裝
 
