@@ -21,9 +21,9 @@ URL活著不算驗證成功。判完回寫修正，partial 的縮小記錄在案
 
 100%查核：所有影響結論的 load-bearing numbers、執行摘要中的數字、recommendation 直接依賴的數字。其餘數字抽樣查核（每章至少抽一條高風險的）。時效主張標來源日。
 
-## 紅隊（按主張風險排優先級）
+## 紅隊（證據制，不投票）
 
-只對高風險主張開紅隊；無高風險主張時用反方五問代替，不硬湊編制。優先查：對最終結論影響大、confidence低、來源互相衝突、recommendation對它敏感的主張。編制1辯護＋3反方（claim挑刺／矛盾搜索／來源多樣性），同模型三prompt並行。contest（互斥結論、單源高風險推論）才加輪；論點不再推進就停，硬上限3輪；停火後標 GENUINELY_UNCERTAIN 並寫下何種證據可解。異議（多數 verdict＋直接引文）寫進「核心爭議」區。
+只對高風險主張開；無高風險用反方五問代替。Challenger 提交必須含：challenged_claim_id、specific_objection、new_evidence、origin、entailment、why_it_changes_claim。空泛「可能有其他解釋」直接 discard。裁決看 provenance、測量品質、entailment、獨立性、時效、解釋力，不看票數。contest 才加輪；論點不再推進就停，硬上限3輪（熔斷線非精確閾值）；停火標 GENUINELY_UNCERTAIN 並寫下何種證據可解。異議原文寫進「核心爭議」區。
 
 ## 連結驗證波（報告完成後必跑）
 

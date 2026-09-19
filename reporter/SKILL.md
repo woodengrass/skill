@@ -14,7 +14,8 @@ description: Use ONLY when the user explicitly requests reporter via /reporter o
 - 題目必填，一句話。
 - 第一題問語言（繁體中文→zh-Hant／简体中文→zh-Hans／English→en），寫進 `report-meta.json`。
 - 第二題問廣度（低／中／高），第三題問深度（低／中／高）。三題問完不再問。
-- 廣度＝方向數量（低3-4／中5-8／高10+）；深度＝每片量＋輪次（低10-20一波／中20-50擴一次／高50+擴到達標）。
+- 廣度＝方向數量：低3-4片只 cover主幹／中5-8片主幹加兩側／高10片以上連邊角都收。
+- 深度＝研究嚴格程度：低答核心問題、少量高品質來源；中測主要替代解釋、找第一手、做必要 cross-check；高完整 question coverage、alternative hypotheses、provenance tracing、adversarial search、model-specific sensitivity。來源數只是 guardrail。
 
 ## 管線
 

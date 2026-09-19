@@ -12,9 +12,9 @@
 
 question_tree 必備；其餘按需：causal.json（nodes／edges 帶 relation＋confidence＋claims）、options.json、system.json、timeline.json、scenarios.json。不要全題全生成。
 
-## W1 方向清單
+## W1 方向清單（由 Router 驅動，不是自由切片）
 
-先判型別（一次性研究／週期報告／提案／投影片），再切互不重疊的片，數量由廣度定。每片必含：IN／OUT邊界、Decision Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（第一手觀測者是誰，見 `evidence.md`）、DEEP（抓全文）或SCAN（看片段）。至少保留一席反方／風險／失敗模式方向。每組並發≤3。寫進工作區 `00_方向.mdx`，不停等直接進W2。
+先讀 `research/routing.yaml`。primary model 決定必備片型：feasibility 必有需求／BAU／主要方案／可信替代／約束／財務／敏感度片；causal 必有現象／候選因／替代假設／反證片；mechanism 必有分層拆解片；investigation 必有時間線／文件鏈／涉事方片；landscape 必有分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的必查證據轉成片。每片必含：IN／OUT邊界、Decision Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。至少保留一席反方／風險方向。每組並發≤3。寫進 `00_方向.mdx`，不停等直接進W2。只判型準確但切片隨便，視為 W1 失敗。
 
 ## W2 按片採集
 
@@ -26,7 +26,7 @@ question_tree 必備；其餘按需：causal.json（nodes／edges 帶 relation�
 
 ## W3 擴大搜索
 
-Quota是下限不是目標：每片有最低條目數和最低來源類型數（至少含一種第一手或官方統計）。停搜條件（任一即停）：核心claim全被覆盖且來源類型齊了；反方證據已找到；新一輪結果高度重複、已不能實質改變結論；改綱需求出現（重大發現推翻假設／冒出關鍵子題，改綱註明證據，重構≤50%）。熔斷：單片上限3輪仍不足就停，缺口進 `gaps.json`，引用該片結論降一級信心；熔斷片過半整案降級，摘要段第一句寫明。同一片重搜先讀已產出檔去重。
+Quota 只是最低保障和熔斷參考，不是完成條件。正常完成需同時滿足：核心問題已回答、load-bearing claims 已覆蓋、主要 alternative hypotheses 已測試、重大矛盾已處理、來源多樣性足夠；或新一輪邊際資訊增益已飽和（結果高度重複、不能實質改變結論）。飽和後仍 unresolved 就停止研究、保留 unresolved，禁強行下結論。熔斷：單片上限3輪仍不足就停，缺口進 `gaps.json`，引用該片結論降一級信心；熔斷片過半整案降級，摘要段第一句寫明。改綱（重大發現推翻假設／冒出關鍵子題）需註明證據，重構≤50%。同一片重搜先讀已產出檔去重。
 
 ## W4 缺口補齊
 
@@ -34,7 +34,11 @@ Quota是下限不是目標：每片有最低條目數和最低來源類型數（
 
 ## W5 交叉驗證＋總報告
 
-按 `verification.md` 跑完查核再寫總報告，格式見 `writing.md`。
+按 `verification.md` 跑完查核，再進 editorial passes，最後寫總報告（格式見 `writing.md`）。
+
+## W5.5 Story Architect＋三道編輯
+
+Story Architect 只讀 primary_model、question_tree、模型 artifact、verified claims，決定 angle、揭示順序、開頭、過渡、結尾、刪什麼；研究怎麼分工不決定閱讀順序。之後：Structural Editor（按 `editorial-standards.md` 的 per-model 檢查表審結構）→ Fact／Standards Editor（數字、引文、出處、時序）→ Line Editor（文字）。
 
 ## W6 增量更新（工作區已存在才走）
 

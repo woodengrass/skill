@@ -15,24 +15,26 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 ```json
 {
   "title": "題目", "date": "查證基準日", "verdict": "結論句",
-  "lang": "zh-Hant",
+  "lang": "zh-Hant", "footer": "頁尾一句話（缺省用中性預設）",
   "summary": [{"k": "維度", "v": "一句判斷", "d": "關鍵數字"}],
-  "score": 82,
+  "trust": {"cutoff": "資料截止日", "sources": ["主要證據"],
+    "original_ratio": "原始來源比例", "unresolved": ["未決問題"],
+    "changelog": ["更新更正"]},
   "kpis": [{"n": "數字", "l": "標籤"}],
   "charts": ["同chart圍欄spec"],
   "chapters": [{"t": "標題", "d": "一句話", "path": "index.html#/..."}]
 }
 ```
 
-含執行摘要卡、完善度分數條、KPI、圖表、章節卡。`gaps.json`放缺口陣列（`[{item, status}]`，status限待補／已放棄／下版追），入口讀它渲染缺口區，正文不出現。兩檔機器寫機器讀。
+入口渲染：執行摘要卡、可信度說明（讀 trust）、KPI、圖表、章節卡、缺口區（讀 `gaps.json`）。完善度分數只放內部／debug，不對讀者顯示百分比。`document.title` 與 `<html lang>` 由 meta 動態設定。
 
 ## 呈現模式（同一證據核多視圖，不要全開）
 
-Quick（5分鐘核心）、Deep（完整）、Evidence（Claim→Evidence→Origin）、Timeline（事件演變）、Disagreement（爭議與未決）、Updates（相對上次改變了什麼）。不要所有題目顯示所有tab，按 `routing.yaml` 的 presentation 段開關。
+Quick、Deep、Evidence、Timeline、Disagreement、Updates 按 `routing.yaml` 開關。現狀：reader-template 只實作單文檔＋Evidence 雛形（source-map 反白查詢），多 tab 切換與獨立 story-template.html 屬 planned，文件不得寫成已有。
 
 ## Story／Dossier 分離
 
-長篇敘事另有 story 呈現（適合 explainer／investigation／evolution／mechanism），研究卷宗走 dossier（適合 feasibility／comparison／policy）。同一研究可同時生成兩者。
+長篇敘事另有 story 呈現（適合 explainer／investigation／evolution／mechanism），研究卷宗走 dossier。獨立 story-template.html 屬 planned；現階段長文直接走 reader 長文檔＋錨點，不宣稱已有 story view。
 
 ## 分數顯示規則
 

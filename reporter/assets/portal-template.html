@@ -89,10 +89,24 @@ function draw(){
     catch(e){el.outerHTML='<p>圖表載入失敗</p>'}
   });
 }
+function trustHtml(){
+  const t=META.trust||{};
+  const rows=[
+    ['資料截止', t.cutoff||META.date||''],
+    ['主要證據', (t.sources||[]).join('、')],
+    ['原始來源比例', t.original_ratio||''],
+    ['未決問題', (t.unresolved||[]).join('；')],
+    ['更新更正', (t.changelog||[]).join('；')]
+  ].filter(r=>r[1]);
+  if(!rows.length)return '<p>暫無額外說明，見內文。</p>';
+  return '<ul>'+rows.map(r=>'<li><b>'+esc(r[0])+'：</b>'+esc(r[1])+'</li>').join('')+'</ul>';
+}
 async function main(){
   applyTheme(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
   document.getElementById('themeBtn').onclick=()=>applyTheme(theme()?'light':'dark');
   const r=await fetch('report-meta.json');META=await r.json();
+  document.title=(META.title||'報告')+' · 入口';
+  document.documentElement.lang=META.lang||'zh-Hant';
   const root=document.getElementById('root');
   root.innerHTML=
     '<div class="hero"><div class="date">查證基準日：'+esc(META.date||'')+'</div>'+
@@ -102,8 +116,7 @@ async function main(){
     '<h2>執行摘要</h2><div class="cards">'+(META.summary||[]).map(c=>
       '<div class="card"><div class="k">'+esc(c.k)+'</div><div class="v">'+esc(c.v)+
       '</div><div class="d">'+esc(c.d||'')+'</div></div>').join('')+'</div>'+
-    '<h2>完善度</h2><div class="scorebar"><div class="track"><div class="fill" style="width:'+
-      (META.score||0)+'%"></div></div><p>'+(META.score||0)+' / 100</p></div>'+
+    '<h2>可信度說明</h2><div class="scorebar">'+trustHtml()+'</div>'+
     '<h2>關鍵指標</h2><div class="kpis">'+(META.kpis||[]).map(k=>
       '<div class="kpi"><div class="n">'+esc(k.n)+'</div><div class="l">'+esc(k.l)+'</div></div>').join('')+'</div>'+
     '<h2>圖表</h2><div class="charts">'+(META.charts||[]).map((c,i)=>
@@ -112,7 +125,7 @@ async function main(){
     '<h2>章節</h2><div class="chapters">'+(META.chapters||[]).map(c=>
       '<a href="'+esc(c.path)+'"><b>'+esc(c.t)+'</b><small>'+esc(c.d||'')+'</small></a>').join('')+'</div>'+
     '<h2>缺口與未決</h2><div id="gaps"><p>載入中…</p></div>'+
-    '<footer>事實以專章原文為準，輿情僅供參考。</footer>';
+    '<footer>'+esc(META.footer||'結論以內文證據為準。')+'</footer>';
   try{
     const gr=await fetch('gaps.json');
     if(gr.ok){
