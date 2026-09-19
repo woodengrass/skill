@@ -149,6 +149,8 @@ function renderMD(src){
   while(i<lines.length){
     const ln=lines[i];
     if(/^\s*<\/?(details|summary|div)\b[^>]*>\s*$/.test(ln)){out.push(ln);i++;continue}
+    const pm=ln.match(/^\s*<!--\s*passage:([A-Za-z0-9]+)\s*-->\s*$/);
+    if(pm){out.push('<span class="passage-anchor" data-pid="'+pm[1]+'"></span>');i++;continue}
     if(/^```/.test(ln)){const info=ln.slice(3).trim().toLowerCase();const buf=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){buf.push(lines[i]);i++}i++;
       if(info==='chart'){const raw=buf.join('\n');let note='';const nm=raw.match(/"note"\s*:\s*"((?:[^"\\]|\\.)*)"/);if(nm)note=nm[1];
         out.push('<div class="echart" data-spec=\''+esc(raw).replace(/'/g,'&#39;')+'\'></div>'+(note?'<div class="chartnote">'+inline(note)+'</div>':''));continue}
@@ -383,7 +385,20 @@ async function lookupSources(){
   if(!map){panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>無來源對照表</b>本案未附 source-map.json。';panel.style.display='block';return}
   const key=sel.slice(0,30);
   const hits=[];
+  let pid=null;
+  try{
+    const selObj=window.getSelection();
+    if(selObj.rangeCount){
+      const r=selObj.getRangeAt(0);
+      const anchors=[...document.querySelectorAll('#view .passage-anchor')];
+      for(const a of anchors){
+        if(r.comparePoint(a,0)>=0)pid=a.dataset.pid;
+        else break;
+      }
+    }
+  }catch(e){}
   for(const e of map){
+    if(pid&&e.id===pid){hits.unshift(e);continue}
     const p=e.passage||'';
     if(p.includes(key)||(p.length>20&&sel.includes(p.slice(0,20))))hits.push(e);
     if(hits.length>=8)break;
