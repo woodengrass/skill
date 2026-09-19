@@ -1,36 +1,34 @@
 ---
 name: reporter
-description: Use ONLY when the user explicitly requests reporter via /reporter or by naming reporter. Do NOT auto-load for general coding, debugging, or file edits. One-shot pipeline from topic to browsable report site: takes a topic + breadth/depth dials, runs 5 waves, overwrites a single evergreen report set, ships MDX files plus an in-site reader.
+description: Use ONLY when the user explicitly requests reporter via /reporter or by naming reporter. Do NOT auto-load for general coding, debugging, or file edits. One-shot pipeline from topic to browsable report site: breadth/depth dials, 5 waves plus incremental updates, MDX files plus in-site reader and portal.
 ---
 
 # reporter
 
-一次跑完，不等人。用戶給題目、選廣深，之後不再確認。
+一次跑完，不等人。
 
-## 輸入
+## 啟動
 
-- 題目（必填）：一句話，如「調查新竹捷運可行性」。
-- 第一題問廣度（低／中／高），第二題問深度（低／中／高），見 `references/intensity.md`；用戶不選就按情境預設跑。兩題問完不再問。
+- 題目必填，一句話。
+- 第一題問廣度（低／中／高），第二題問深度（低／中／高）。兩題問完不再問。
+- 廣度＝方向數量：低3-4片只cover主幹／中5-8片主幹加兩側／高10片以上連邊角都收。
+- 深度＝每片量＋輪次：低10-20則一波收工／中20-50則擴一次／高50則以上擴到達標。
+- 預設：事實型廣中深中；輿情型廣中深高；混合型廣高深中；不計成本廣高深高。
 
-## 管線（五波，細節見 `references/waves.md`）
+## 管線
 
-1. W1 方向清單：切互不重疊的片，寫進 `00_方向.mdx`，不停等直接往下跑。
-2. W2 按片採集：每片獨立成檔，附數量自驗。
-3. W3 擴大搜索：循環到配額達標為止。
-4. W4 缺口補齊：缺口清單→定向補搜。
-5. W5 交叉驗證＋總報告：引用鎖定、家族合併、TOP-15數值查核、三源三角、紅隊辯論（見 `references/correctness.md`），再寫總報告覆寫（見 `references/format.md`）。
+W1方向 → W2分片採集 → W3擴大 → W4缺口 → W5驗證＋總報告 → W6增量更新，收尾固定動作。細節見 `references/orchestration.md`。
 
-收尾固定動作：覆蓋不新增、清垃圾、套閱讀器模板（`assets/reader-template.html`）。
+## 層索引
 
-## 情境路由（只定預設，不限制做法）
+- `orchestration.md`：波次、quota、停搜、熔斷、反注入、git歷史。
+- `evidence.md`：Claim→Evidence→Origin、出處獨立性、來源1-5級。
+- `verification.md`：引用鎖定、entailment查核、數字查核、紅隊。
+- `writing.md`：寫作鐵律、敘事、標題數字、frontmatter、來源寫法。
+- `presentation.md`：閱讀器、入口頁、meta/gaps/source-map、圖表。
 
-- 事實型（政策／建設）：官方證據和輿情分區存放，結論只吃官方。
-- 輿情型（候選人支持度）：主體是言論＋民調，民調方法識讀獨立一區，言論禁換算成數字。
-- 混合型：兩套並行。細節見 `references/scenarios.md`。
+## 鐵律
 
-## 鐵律（違反即失敗）
-
-- 寫作規則見 `references/doc-rules.md`（禁AI腔、正文禁方法論）。
-- 驗收見 `references/acceptance.md`（配額不到就加搜）。
-- omo原生：`task`並行＋`explore`／`librarian`（免費便宜）＋`todowrite`＋`task_id`續跑。高成本模型（oracle／ultrabrain／metis／momus）預設全關。
-- 英文目錄與檔名；中文只出現在標題與內文。
+- 正文只留結果；研究過程metadata永不進正文；認知不確定性只出現在固定位置（節尾信心行、核心爭議、未決問題、`gaps.json`）。
+- omo原生：並行＋免費便宜模型＋todowrite＋task_id續跑；oracle／ultrabrain／metis／momus預設全關。
+- 英文目錄與檔名；覆蓋不新增；相同規則只認各層文件定義，不複述。

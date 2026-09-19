@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新竹捷運可行性評估 · 入口</title>
-<!-- reporter 入口頁範例：複製到報告工作區根目錄即用。改標題、卡片、KPI、圖表資料、章節連結即可套用到任何題目。 -->
+<title>__TITLE__ · 入口</title>
+<!-- reporter portal-template：上線時只填 report-meta.json，本檔不用改。
+     部署：本檔存為工作區 portal.html，同目錄放 report-meta.json，
+     libs/echarts.min.js 與 index.html（站內閱讀器）須在相對路徑可達。 -->
 <style>
 :root{--bg:#f5f5f5;--card:#fff;--ink:#222;--line:#ddd;--acc:#1a73e8;--mut:#666}
 [data-theme=dark]{--bg:#121212;--card:#1e1e1e;--ink:#e0e0e0;--line:#444;--acc:#8ab4f8;--mut:#aaa}
@@ -24,6 +26,9 @@ h2{font-size:1.2em;margin:32px 0 12px}
 .card .k{font-size:.8em;color:var(--mut)}
 .card .v{font-size:1.05em;font-weight:bold;margin:4px 0}
 .card .d{font-size:.85em;opacity:.85}
+.scorebar{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
+.scorebar .track{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
+.scorebar .fill{height:100%;background:var(--acc)}
 .kpis{display:flex;gap:10px;flex-wrap:wrap}
 .kpi{flex:1;min-width:140px;background:var(--card);border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .kpi .n{font-size:1.5em;font-weight:bold;color:var(--acc)}
@@ -44,77 +49,72 @@ footer{margin:32px 0 8px;font-size:.8em;color:var(--mut);text-align:center}
 </head>
 <body>
 <button id="themeBtn">🌙 深色</button>
-<div class="wrap">
-
-<div class="hero">
-<div class="date">查證基準日：2026-09-18</div>
-<h1>臺灣新竹市蓋捷運的可行性評估</h1>
-<div class="verdict">結論：<b>有條件可行（B-，3.2/5）——可以蓋，但現在還不能動工</b></div>
-<div class="btns">
-<a href="index.html">進入完整報告</a>
-<a class="ghost" href="index.html#/06_final_report/新竹捷運可行性全面評估總報告.mdx">直接讀總報告</a>
-</div>
-</div>
-
-<h2>執行摘要</h2>
-<div class="cards">
-<div class="card"><div class="k">需求</div><div class="v">人夠多、車太多、公運太少</div><div class="d">大新竹105萬＋竹科18萬，慈雲3900輛/小時；新竹市公運僅6.8%</div></div>
-<div class="card"><div class="k">工程</div><div class="v">走廊明確，高架為主可解</div><div class="d">紅線17.1km＋藍線11.8km輕軌，機廠頭前溪南岸是關鍵</div></div>
-<div class="card"><div class="k">財務</div><div class="v">吃力，靠聯開才過</div><div class="d">自償4.77%→25.76%（含聯開），地方自籌百億級</div></div>
-<div class="card"><div class="k">程序</div><div class="v">剛起步，三度退件後整合中</div><div class="d">2026/3整合可研決標，2027底送部；基準2032-2033動工</div></div>
-</div>
-
-<h2>關鍵指標</h2>
-<div class="kpis">
-<div class="kpi"><div class="n">105.2萬</div><div class="l">大新竹人口</div></div>
-<div class="kpi"><div class="n">18.2萬</div><div class="l">竹科就業</div></div>
-<div class="kpi"><div class="n">6.8%</div><div class="l">新竹市公運市占</div></div>
-<div class="kpi"><div class="n">357.74億</div><div class="l">先期工程經費</div></div>
-<div class="kpi"><div class="n">2027底</div><div class="l">目標送審</div></div>
-</div>
-
-<h2>圖表</h2>
-<div class="charts">
-<div class="chartbox"><div class="echart" id="c1"></div><div class="chartnote">加權3.2＝有條件可行</div></div>
-<div class="chartbox"><div class="echart" id="c2"></div><div class="chartnote">保守2-3萬、中估5-7萬、樂觀12.5萬；輕軌門檻約5-6萬/日</div></div>
-</div>
-
-<h2>章節</h2>
-<div class="chapters">
-<a href="index.html#/01_official/01_官方可行性與審查進度.mdx"><b>第一章 歷史與審查</b><small>37年、四代方案、三次退件</small></a>
-<a href="index.html#/02_demand/02_運量人口竹科分析.mdx"><b>第二章 需求運量</b><small>人口、竹科、壅塞、中估5.5萬</small></a>
-<a href="index.html#/03_route_finance/03_路線技術財務.mdx"><b>第三章 路線財務</b><small>紅藍線、經費演變、自償率</small></a>
-<a href="index.html#/04_politics_EIA/04_政治民意環評替代方案.mdx"><b>第四章 政治環評</b><small>首長時序、民意、環評、替代方案</small></a>
-<a href="index.html#/05_compare_news/05_比較與最新動態.mdx"><b>第五章 比較動態</b><small>五都對照、2024-2026大事記</small></a>
-<a href="index.html#/07_minyi_reference/M2_新竹輿情與媒體精煉報告.mdx"><b>輿情參考</b><small>僅參考，約780則隔離存放</small></a>
-</div>
-
-<footer>事實以專章原文為準，輿情僅供參考。</footer>
-</div>
+<div class="wrap" id="root"><p>載入中…（請經本地伺服器開啟，見 start_server.bat）</p></div>
 <script src="libs/echarts.min.js"></script>
 <script>
 const PALETTE=['#4477AA','#EE6677','#228833','#CCBB44','#66CCEE','#AA3377','#BBBBBB'];
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 function theme(){return document.documentElement.dataset.theme==='dark'}
 function applyTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem('theme',t);
   document.getElementById('themeBtn').textContent=t==='dark'?'☀️ 淺色':'🌙 深色';draw()}
-applyTheme(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
-document.getElementById('themeBtn').onclick=()=>applyTheme(theme()?'light':'dark');
-function draw(){
-  if(typeof echarts==='undefined')return;
-  const ink=theme()?'#e0e0e0':'#222';
-  const base={color:PALETTE,textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'}};
-  const radar=echarts.init(document.getElementById('c1'));
-  radar.setOption(Object.assign({},base,{title:{text:'五維度評分（/5）',left:'center',textStyle:{color:ink}},
-    legend:{textStyle:{color:ink}},
-    radar:{indicator:[{name:'需求',max:5},{name:'工程',max:5},{name:'財務',max:5},{name:'程序',max:5},{name:'政治社會',max:5}]},
-    series:[{type:'radar',areaStyle:{opacity:.2},data:[{name:'評分',value:[3.5,4.0,2.5,2.5,3.0]}]}]}));
-  const bar=echarts.init(document.getElementById('c2'));
-  bar.setOption(Object.assign({},base,{title:{text:'三情境全日運量（萬人次/日）',left:'center',textStyle:{color:ink}},
-    grid:{containLabel:true},xAxis:{type:'category',data:['保守','中估','樂觀'],axisLabel:{color:ink}},
-    yAxis:{type:'value',axisLabel:{color:ink}},
-    series:[{name:'運量',type:'bar',data:[2.5,6,12.5]}]}));
+function optionFor(spec,ink){
+  const base={color:PALETTE,title:{text:spec.title||'',left:'center',textStyle:{color:ink,fontSize:15}},
+    tooltip:{trigger:(spec.type==='pie'||spec.type==='donut')?'item':'axis'},
+    textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'}};
+  if(spec.type==='pie'||spec.type==='donut'){
+    const radius=spec.type==='donut'?['42%','65%']:'60%';
+    return Object.assign(base,{legend:{textStyle:{color:ink}},series:[{type:'pie',radius,
+      data:(spec.series[0].data||[]).map(d=>({value:+d.value||0,name:d.name}))}]});
+  }
+  if(spec.type==='radar'){
+    return Object.assign(base,{legend:{textStyle:{color:ink}},
+      radar:{indicator:(spec.indicators||[]).map(n=>({name:n,max:spec.max||5}))},
+      series:[{type:'radar',areaStyle:{opacity:.2},
+        data:(spec.series||[]).map(s=>({name:s.name,value:(s.data||[]).map(Number)}))}]});
+  }
+  const series=(spec.series||[]).map(s=>({name:s.name,
+    type:spec.type==='line'?'line':'bar',data:(s.data||[]).map(v=>v===null?null:+v))}));
+  return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
+    xAxis:{type:'category',data:spec.x||[],axisLabel:{color:ink}},
+    yAxis:{type:'value',axisLabel:{color:ink}},series});
 }
-draw();
+let META=null;
+function draw(){
+  if(!META||typeof echarts==='undefined')return;
+  const ink=theme()?'#e0e0e0':'#222';
+  (META.charts||[]).forEach((c,i)=>{
+    const el=document.getElementById('c'+i);if(!el)return;
+    const old=echarts.getInstanceByDom(el);if(old)old.dispose();
+    try{echarts.init(el).setOption(optionFor(c,ink))}
+    catch(e){el.outerHTML='<p>圖表載入失敗</p>'}
+  });
+}
+async function main(){
+  applyTheme(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+  document.getElementById('themeBtn').onclick=()=>applyTheme(theme()?'light':'dark');
+  const r=await fetch('report-meta.json');META=await r.json();
+  const root=document.getElementById('root');
+  root.innerHTML=
+    '<div class="hero"><div class="date">查證基準日：'+esc(META.date||'')+'</div>'+
+    '<h1>'+esc(META.title||'')+'</h1>'+
+    '<div class="verdict">'+esc(META.verdict||'')+'</div>'+
+    '<div class="btns"><a href="index.html">進入完整報告</a></div></div>'+
+    '<h2>執行摘要</h2><div class="cards">'+(META.summary||[]).map(c=>
+      '<div class="card"><div class="k">'+esc(c.k)+'</div><div class="v">'+esc(c.v)+
+      '</div><div class="d">'+esc(c.d||'')+'</div></div>').join('')+'</div>'+
+    '<h2>完善度</h2><div class="scorebar"><div class="track"><div class="fill" style="width:'+
+      (META.score||0)+'%"></div></div><p>'+(META.score||0)+' / 100</p></div>'+
+    '<h2>關鍵指標</h2><div class="kpis">'+(META.kpis||[]).map(k=>
+      '<div class="kpi"><div class="n">'+esc(k.n)+'</div><div class="l">'+esc(k.l)+'</div></div>').join('')+'</div>'+
+    '<h2>圖表</h2><div class="charts">'+(META.charts||[]).map((c,i)=>
+      '<div class="chartbox"><div class="echart" id="c'+i+'"></div>'+
+      (c.note?'<div class="chartnote">'+esc(c.note)+'</div>':'')+'</div>').join('')+'</div>'+
+    '<h2>章節</h2><div class="chapters">'+(META.chapters||[]).map(c=>
+      '<a href="'+esc(c.path)+'"><b>'+esc(c.t)+'</b><small>'+esc(c.d||'')+'</small></a>').join('')+'</div>'+
+    '<footer>事實以專章原文為準，輿情僅供參考。</footer>';
+  draw();
+}
+main();
 </script>
 </body>
 </html>

@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- reporter reader-template: fill NAV, PDFS and <title>, save as workspace index.html -->
-<title>新竹捷運可行性研究報告 · 閱讀器</title>
+<!-- reporter reader-template: fill NAV, PDFS, <title> and home block, save as workspace index.html -->
+<title>__TITLE__</title>
 <style>
 :root{--bg:#f5f5f5;--card:#fff;--ink:#222;--line:#ddd;--acc:#1a73e8;--accbg:#e8f0fe;--warn:#fef7e0;--code:#f0f0f0;--prebg:#263238;--preink:#e0e0e0}
 [data-theme=dark]{--bg:#121212;--card:#1e1e1e;--ink:#e0e0e0;--line:#444;--acc:#8ab4f8;--accbg:#2a3a55;--warn:#3a3000;--code:#333;--prebg:#000;--preink:#e0e0e0}
@@ -95,7 +96,7 @@ article details ul{max-height:420px;overflow-y:auto}
 <script>
 // ---------- 目錄 ----------
 const NAV=/*__NAV__: fill like [["Sec",[["Title","dir/file.mdx"]]],...] */[];
-const PDFS=[["審查要點114全文","raw_sources/2026-09-18_MOTC_MRT-review-points-114_Eg-full.pdf"],["審查要點114附件","raw_sources/2026-09-18_MOTC_MRT-review-points-114_Eg01-attachments.pdf"],["審查要點107全文","raw_sources/2026-09-18_MOTC_MRT-review-points-107_Eg-full.pdf"],["審查要點107附件","raw_sources/2026-09-18_MOTC_MRT-review-points-107_Eg01-attachments.pdf"],["C型路權手冊","raw_sources/2026-09-18_IOT_C-type-LRT-planning-safety.pdf"],["容量手冊AB型","raw_sources/2026-09-18_IOT_LRT-capacity-manual-AB.pdf"],["大捷法115.1.14","raw_sources/2026-09-18_MassRapidTransit-Act_Taipei-export.pdf"],["竹縣十大交通建設","raw_sources/2026-09-18_HsinchuCounty-top10-transport-construction.html"]];
+const PDFS=/*__PDFS__*/[];
 const FLAT=[];NAV.forEach(([sec,items])=>items.forEach(([t,p])=>FLAT.push({sec,t,p})));
 // ---------- 側欄 ----------
 const nav=document.getElementById('nav'),view=document.getElementById('view');
@@ -445,7 +446,7 @@ function route(){
   const h=decodeURIComponent(location.hash||'');
   if(h.startsWith('#/'))load(h.slice(2));
   else if(/^#(h\d+|src-\d+)$/.test(h)){const el=document.getElementById(h.slice(1));if(el){el.scrollIntoView();return}}
-  else view.innerHTML='<div class="home"><h1>新竹捷運可行性研究報告</h1><p>查證基準日 2026-09-18｜結論：<b>有條件可行（B-，3.2/5）——可以蓋，但現在還不能動工。</b></p><p>點左側目錄，或按 <b>Ctrl+K</b> 全文搜尋。先讀總報告 → 查專章 → 看輿情M2 → 驗附錄原文。</p></div>';
+  else view.innerHTML=__HOME__;
 }
 window.addEventListener('hashchange',route);
 window.addEventListener('scroll',()=>{document.getElementById('toTop').style.display=scrollY>600?'block':'none'});
