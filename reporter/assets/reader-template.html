@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- reporter reader-template: fill NAV, PDFS and <title>, save as workspace index.html -->
+<title>新竹捷運可行性研究報告 · 閱讀器</title>
+<style>
+:root{--bg:#f5f5f5;--card:#fff;--ink:#222;--line:#ddd;--acc:#1a73e8;--accbg:#e8f0fe;--warn:#fef7e0;--code:#f0f0f0;--prebg:#263238;--preink:#e0e0e0}
+[data-theme=dark]{--bg:#121212;--card:#1e1e1e;--ink:#e0e0e0;--line:#444;--acc:#8ab4f8;--accbg:#2a3a55;--warn:#3a3000;--code:#333;--prebg:#000;--preink:#e0e0e0}
+*{box-sizing:border-box}body{font-family:"Microsoft JhengHei","Noto Sans TC",sans-serif;margin:0;background:var(--bg);color:var(--ink)}
+.layout{display:flex;min-height:100vh}
+aside#nav{width:300px;flex-shrink:0;background:var(--card);border-right:1px solid var(--line);padding:12px 16px;overflow-y:auto;height:100vh;position:sticky;top:0}
+aside h3{font-size:.9em;margin:14px 0 4px;color:var(--acc);cursor:pointer;user-select:none}
+aside h3::before{content:'▾ ';font-size:.8em}aside h3.closed::before{content:'▸ '}
+aside ul{list-style:none;padding:0;margin:0}aside ul.hidden{display:none}
+aside a{display:block;padding:5px 8px;border-radius:4px;font-size:.86em;color:var(--ink);text-decoration:none}
+aside a:hover{background:var(--accbg)}aside a.active{background:var(--acc);color:#fff}
+main{flex:1;padding:28px;max-width:760px;min-width:0}
+#toc{width:220px;flex-shrink:0;padding:28px 12px 28px 0;position:sticky;top:0;height:100vh;overflow-y:auto;font-size:.82em}
+#toc a{display:block;padding:3px 8px;color:var(--ink);text-decoration:none;border-left:2px solid transparent;opacity:.75}
+#toc a.on{border-left-color:var(--acc);opacity:1;color:var(--acc)}
+#toc .h3{padding-left:22px}
+article{background:var(--card);border-radius:8px;padding:28px 32px;box-shadow:0 1px 3px rgba(0,0,0,.15);line-height:1.8}
+article h1{font-size:1.6em;border-bottom:2px solid var(--acc);padding-bottom:8px}
+article h2{font-size:1.3em;margin-top:1.8em;border-bottom:1px solid var(--line);padding-bottom:4px}
+article h2 .anc,article h3 .anc{opacity:0;margin-left:6px;font-size:.8em}article h2:hover .anc,article h3:hover .anc{opacity:1}
+.tablewrap{overflow-x:auto}article table{border-collapse:collapse;width:100%;margin:12px 0;font-size:.92em;min-width:560px}
+article thead th{position:sticky;top:0}article th,article td{border:1px solid var(--line);padding:6px 10px;text-align:left}
+article th{background:var(--accbg)}article td.num{text-align:right}
+article code{background:var(--code);padding:1px 6px;border-radius:4px;font-size:.9em}
+article pre{background:var(--prebg);color:var(--preink);padding:14px;border-radius:6px;overflow:auto}
+article pre code{background:none;color:inherit;padding:0}
+article blockquote{border-left:4px solid #f9ab00;background:var(--warn);margin:12px 0;padding:8px 16px}
+.docdate{text-align:right;font-size:.78em;opacity:.55;margin-bottom:2px}
+article a{color:var(--acc)}mark{background:#ffeb3b;color:#000}
+article a.cite{display:inline-block;min-width:20px;height:20px;line-height:20px;text-align:center;font-size:.72em;
+  background:var(--accbg);border:1px solid var(--acc);border-radius:10px;padding:0 5px;margin:0 2px;text-decoration:none}
+article details{border:1px solid var(--line);border-radius:6px;padding:10px 16px;margin:16px 0;background:var(--bg)}
+article summary{cursor:pointer;font-weight:bold;color:var(--acc)}
+article details ul{max-height:420px;overflow-y:auto}
+.echart{width:100%;height:320px;max-width:100%}
+.chartnote{font-size:.82em;opacity:.65;margin:2px 0 14px}
+.crumbs{font-size:.82em;opacity:.7;margin-bottom:8px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:20px}
+.pager a{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:10px 16px;text-decoration:none;color:var(--ink);font-size:.88em;flex:1}
+.pager a:hover{border-color:var(--acc)}
+.backlinks{margin-top:20px;font-size:.86em;background:var(--card);border-radius:8px;padding:12px 18px}
+#topbar{display:flex;gap:8px;align-items:center;margin-bottom:12px}
+#topbar button{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:6px 12px;cursor:pointer;color:var(--ink);font-size:.86em}
+#banner{display:none;background:var(--warn);border:1px solid #f9ab00;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.9em}
+#searchOverlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:50}
+#searchBox{background:var(--card);max-width:620px;margin:10vh auto;border-radius:10px;padding:16px;max-height:70vh;display:flex;flex-direction:column}
+#searchBox input{font-size:1em;padding:10px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--ink)}
+#searchRes{overflow-y:auto;margin-top:8px}
+#searchRes a{display:block;padding:8px;text-decoration:none;color:var(--ink);border-bottom:1px solid var(--line);font-size:.9em}
+#searchRes a:hover{background:var(--accbg)}
+#searchRes small{opacity:.65}
+#tip{display:none;position:fixed;z-index:60;max-width:340px;background:var(--card);border:1px solid var(--acc);border-radius:6px;padding:8px 12px;font-size:.82em;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+#srcPanel{display:none;position:fixed;right:16px;bottom:16px;z-index:60;width:min(380px,90vw);max-height:50vh;overflow-y:auto;background:var(--card);border:1px solid var(--acc);border-radius:8px;padding:12px 16px;font-size:.86em;box-shadow:0 2px 12px rgba(0,0,0,.25)}
+#srcPanel b{display:block;margin-bottom:6px}
+#srcPanel .x{float:right;cursor:pointer;opacity:.6;border:none;background:none;color:var(--ink);font-size:1em}
+#toTop{display:none;position:fixed;right:20px;bottom:20px;z-index:40;background:var(--acc);color:#fff;border:none;border-radius:50%;width:44px;height:44px;font-size:18px;cursor:pointer}
+#burger{display:none}
+@media(max-width:1100px){#toc{display:none}}
+@media(max-width:800px){
+  aside#nav{position:fixed;left:0;top:0;z-index:45;transform:translateX(-100%);transition:.2s}
+  aside#nav.open{transform:none;box-shadow:2px 0 12px rgba(0,0,0,.3)}
+  #burger{display:inline-block}main{padding:12px}article{padding:18px}
+}
+@media print{aside#nav,#toc,#topbar,.pager,#toTop,#banner{display:none}main{max-width:none}article{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="layout">
+<aside id="nav"><h2 style="font-size:1.05em;margin:0 0 8px">研究報告目錄</h2></aside>
+<main>
+<div id="topbar">
+<button id="burger">☰ 目錄</button>
+<button id="searchBtn">🔍 搜尋 (Ctrl+K)</button>
+<button id="themeBtn">🌙 深色</button>
+</div>
+<div id="banner">⚠ 瀏覽器擋下了本地檔案讀取。請改用 <b>start_server.bat</b> 開啟本站。</div>
+<div class="crumbs" id="crumbs"></div>
+<article id="view"></article>
+<div class="pager" id="pager" style="display:none"></div>
+<div class="backlinks" id="backlinks" style="display:none"></div>
+</main>
+<nav id="toc"><b style="font-size:.85em">本頁大綱</b><div id="tocList"></div></nav>
+</div>
+<div id="searchOverlay"><div id="searchBox"><input id="searchInput" placeholder="輸入關鍵字搜尋全站…"><div id="searchRes"></div></div></div>
+<div id="tip"></div>
+<button id="toTop" title="回頂部">↑</button>
+<script src="libs/echarts.min.js"></script>
+<script>
+// ---------- 目錄 ----------
+const NAV=/*__NAV__: fill like [["Sec",[["Title","dir/file.mdx"]]],...] */[];
+const PDFS=[["審查要點114全文","raw_sources/2026-09-18_MOTC_MRT-review-points-114_Eg-full.pdf"],["審查要點114附件","raw_sources/2026-09-18_MOTC_MRT-review-points-114_Eg01-attachments.pdf"],["審查要點107全文","raw_sources/2026-09-18_MOTC_MRT-review-points-107_Eg-full.pdf"],["審查要點107附件","raw_sources/2026-09-18_MOTC_MRT-review-points-107_Eg01-attachments.pdf"],["C型路權手冊","raw_sources/2026-09-18_IOT_C-type-LRT-planning-safety.pdf"],["容量手冊AB型","raw_sources/2026-09-18_IOT_LRT-capacity-manual-AB.pdf"],["大捷法115.1.14","raw_sources/2026-09-18_MassRapidTransit-Act_Taipei-export.pdf"],["竹縣十大交通建設","raw_sources/2026-09-18_HsinchuCounty-top10-transport-construction.html"]];
+const FLAT=[];NAV.forEach(([sec,items])=>items.forEach(([t,p])=>FLAT.push({sec,t,p})));
+// ---------- 側欄 ----------
+const nav=document.getElementById('nav'),view=document.getElementById('view');
+const collapsed=JSON.parse(localStorage.getItem('navCollapsed')||'[]');
+NAV.forEach(([sec,items])=>{
+  const h=document.createElement('h3');h.textContent=sec;
+  const ul=document.createElement('ul');
+  if(collapsed.includes(sec)){ul.classList.add('hidden');h.classList.add('closed')}
+  h.onclick=()=>{ul.classList.toggle('hidden');h.classList.toggle('closed');
+    const c=JSON.parse(localStorage.getItem('navCollapsed')||'[]');
+    const i=c.indexOf(sec);
+    if(ul.classList.contains('hidden')&&i<0)c.push(sec);if(!ul.classList.contains('hidden')&&i>=0)c.splice(i,1);
+    localStorage.setItem('navCollapsed',JSON.stringify(c));};
+  items.forEach(([t,p])=>{
+    const li=document.createElement('li'),a=document.createElement('a');
+    a.textContent=t;a.href='#/'+p;a.dataset.path=p;ul.appendChild(li);li.appendChild(a);
+  });
+  nav.appendChild(h);nav.appendChild(ul);
+});
+const hp=document.createElement('h3');hp.textContent='附錄 PDF';nav.appendChild(hp);
+const pu=document.createElement('ul');
+PDFS.forEach(([t,p])=>{const li=document.createElement('li'),a=document.createElement('a');a.textContent=t;a.href=p;a.target='_blank';pu.appendChild(li);li.appendChild(a);});
+nav.appendChild(pu);
+// ---------- 主題 ----------
+function applyTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem('theme',t);
+  document.getElementById('themeBtn').textContent=t==='dark'?'☀️ 淺色':'🌙 深色'}
+applyTheme(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'));
+document.getElementById('themeBtn').onclick=()=>{applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');initCharts()};
+document.getElementById('burger').onclick=()=>nav.classList.toggle('open');
+// ---------- Markdown 渲染 ----------
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function inline(s){
+  s=esc(s);
+  const codes=[];s=s.replace(/`([^`]+)`/g,(m,c)=>{codes.push(c);return ' '+(codes.length-1)+' '});
+  s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,'<img alt="$1" src="$2" style="max-width:100%">');
+  s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" target="_blank">$1</a>');
+  s=s.replace(/(?<![\"'>=])(https?:\/\/[^\s<)"'\]]+)/g,'<a href="$1" target="_blank">$1</a>');
+  s=s.replace(/\[\^(\d+)\]/g,'<a class="cite" href="#src-$1">$1</a>');
+  s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
+  s=s.replace(/(^|[^*\w])\*([^*\n]+)\*/g,'$1<em>$2</em>');
+  s=s.replace(/ (\d+) /g,(m,i)=>'<code>'+codes[+i]+'</code>');
+  return s;
+}
+let hid=0;
+function renderMD(src){
+  hid=0;const lines=src.replace(/\r/g,'').split('\n'),out=[];let i=0;
+  const isSep=r=>/^\|?[\s:|-]+\|?[\s:|-]*$/.test(r)&&r.includes('-');
+  const head=(lv,t)=>'<h'+lv+' id="h'+(hid)+'">'+inline(t)+'<a class="anc" href="javascript:void(0)" onclick="document.getElementById(\'h'+(hid)+'\').scrollIntoView()">#</a></h'+lv+'>'+(hid++,'');
+  while(i<lines.length){
+    const ln=lines[i];
+    if(/^\s*<\/?(details|summary|div)\b[^>]*>\s*$/.test(ln)){out.push(ln);i++;continue}
+    if(/^```/.test(ln)){const info=ln.slice(3).trim().toLowerCase();const buf=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){buf.push(lines[i]);i++}i++;
+      if(info==='chart'){const raw=buf.join('\n');let note='';const nm=raw.match(/"note"\s*:\s*"((?:[^"\\]|\\.)*)"/);if(nm)note=nm[1];
+        out.push('<div class="echart" data-spec=\''+esc(raw).replace(/'/g,'&#39;')+'\'></div>'+(note?'<div class="chartnote">'+inline(note)+'</div>':''));continue}
+      out.push('<pre><code>'+esc(buf.join('\n'))+'</code></pre>');continue}
+    if(/^\|.*\|?\s*$/.test(ln)&&i+1<lines.length&&isSep(lines[i+1])){
+      const cells=c=>c.trim().replace(/^\||\|$/g,'').split('|').map(x=>x.trim());
+      const hdc=cells(ln),rows=[];i+=2;
+      while(i<lines.length&&/^\|/.test(lines[i])){rows.push(cells(lines[i]));i++}
+      out.push('<div class="tablewrap"><table><thead><tr>'+hdc.map(h=>'<th>'+inline(h)+'</th>').join('')+'</tr></thead><tbody>'+
+        rows.map(r=>'<tr>'+r.map(c=>'<td>'+inline(c)+'</td>').join('')+'</tr>').join('')+'</tbody></table></div>');continue}
+    const m=ln.match(/^(#{1,6})\s+(.*)/);
+    if(m){const lv=Math.min(m[1].length,3);out.push(head(lv,m[2]));i++;continue}
+    if(/^\s*---+\s*$/.test(ln)){out.push('<hr>');i++;continue}
+    if(/^\s*>/.test(ln)){const buf=[];while(i<lines.length&&/^\s*>/.test(lines[i])){buf.push(lines[i].replace(/^\s*>\s?/,''));i++}
+      if(buf.length===1){const dm=buf[0].match(/^日期[：:]\s*(.+)$/);if(dm){out.push('<div class="docdate">'+esc(dm[1].trim())+'</div>');continue}}
+      out.push('<blockquote>'+buf.map(inline).join('<br>')+'</blockquote>');continue}
+    if(/^\s*([-*]|\d+[.)])\s+/.test(ln)){const ordered=/^\s*\d/.test(ln);const buf=[];while(i<lines.length&&/^\s*([-*]|\d+[.)])\s+/.test(lines[i])){buf.push(lines[i].replace(/^\s*([-*]|\d+[.)])\s+/,'')+' ');i++}const tag=ordered?'ol':'ul';out.push('<'+tag+'>'+buf.map(b=>'<li>'+inline(b)+'</li>').join('')+'</'+tag+'>');continue}
+    if(/^\s*$/.test(ln)){i++;continue}
+    const buf=[ln];i++;
+    while(i<lines.length&&!/^\s*$/.test(lines[i])&&!/^(#{1,6}\s|```|\||\s*>|\s*([-*]|\d+[.)])\s+|\s*---+)/.test(lines[i])){buf.push(lines[i]);i++}
+    out.push('<p>'+buf.map(inline).join('<br>')+'</p>');
+  }
+  return out.join('\n');
+}
+// ---------- 全文索引（搜尋＋反向連結） ----------
+const TEXTS={};let indexReady=false;
+async function buildIndex(){
+  if(indexReady)return;
+  await Promise.all(FLAT.map(async f=>{
+    if(TEXTS[f.p])return;
+    try{const r=await fetch(encodeURI(f.p));if(r.ok)TEXTS[f.p]=await r.text()}catch(e){}
+  }));
+  indexReady=true;
+}
+function backlinksFor(path){
+  const base=path.split('/').pop(),out=[];
+  for(const k of Object.keys(TEXTS)){
+    if(k===path)continue;
+    if(TEXTS[k].includes(base)||TEXTS[k].includes(path))out.push(k);
+  }
+  return out;
+}
+// ---------- 搜尋 ----------
+const overlay=document.getElementById('searchOverlay'),sInput=document.getElementById('searchInput'),sRes=document.getElementById('searchRes');
+function openSearch(){overlay.style.display='block';sInput.value='';sRes.innerHTML='';setTimeout(()=>sInput.focus(),50);buildIndex()}
+function closeSearch(){overlay.style.display='none'}
+document.getElementById('searchBtn').onclick=openSearch;
+overlay.onclick=e=>{if(e.target===overlay)closeSearch()};
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();overlay.style.display==='block'?closeSearch():openSearch()}
+  if(e.key==='Escape')closeSearch();
+});
+let sTimer=null;
+sInput.oninput=()=>{
+  clearTimeout(sTimer);
+  sTimer=setTimeout(()=>{
+    const q=sInput.value.trim();if(!q){sRes.innerHTML='';return}
+    const hits=[];
+    for(const f of FLAT){
+      const t=TEXTS[f.p]||'';
+      const ti=(f.t+' '+f.sec).includes(q),ci=t.includes(q);
+      if(!ti&&!ci)continue;
+      let snip='';
+      if(ci){const idx=t.indexOf(q);snip=t.slice(Math.max(0,idx-40),idx+60).replace(/\n/g,' ')}
+      hits.push({f,snip,score:(ti?0:100)+Math.min(snip.length,50)});
+      if(hits.length>=60)break;
+    }
+    hits.sort((a,b)=>a.score-b.score);
+    sRes.innerHTML=hits.slice(0,20).map(h=>
+      '<a href="#/'+h.f.p+'?q='+encodeURIComponent(q)+'"><b>'+h.f.t+'</b> <small>'+h.f.sec+'</small><br><small>'+esc(h.snip)+'</small></a>'
+    ).join('')||'<p style="padding:8px">無結果（索引建立中可再試一次）</p>';
+  },200);
+};
+// ---------- 高亮 ----------
+function highlight(term){
+  if(!term)return;
+  const walker=document.createTreeWalker(view,NodeFilter.SHOW_TEXT);
+  const nodes=[];while(walker.nextNode()){const n=walker.currentNode;
+    if(n.parentElement.closest('pre')||n.parentElement.tagName==='MARK')continue;
+    if(n.nodeValue.includes(term))nodes.push(n)}
+  nodes.forEach(n=>{
+    const frag=document.createDocumentFragment(),parts=n.nodeValue.split(term);
+    parts.forEach((p,j)=>{frag.appendChild(document.createTextNode(p));
+      if(j<parts.length-1){const m=document.createElement('mark');m.textContent=term;frag.appendChild(m)}});
+    n.parentElement.replaceChild(frag,n);
+  });
+}
+// ---------- 右側TOC＋spy ----------
+function buildTOC(){
+  const box=document.getElementById('tocList');box.innerHTML='';
+  const hs=[...view.querySelectorAll('h1,h2,h3')];
+  hs.forEach(h=>{
+    const a=document.createElement('a');a.textContent=h.textContent.replace(/#$/,'');
+    a.href='javascript:void(0)';a.className=h.tagName==='H3'?'h3':'';
+    a.onclick=()=>document.getElementById(h.id).scrollIntoView({behavior:'smooth'});
+    box.appendChild(a);
+  });
+  const obs=new IntersectionObserver(es=>{
+    es.forEach(e=>{if(e.isIntersecting){
+      document.querySelectorAll('#tocList a').forEach(x=>x.classList.toggle('on',x.getAttribute('href')==='#'+e.target.id));
+    }});
+  },{rootMargin:'-20% 0px -70% 0px'});
+  hs.forEach(h=>obs.observe(h));
+}
+// ---------- 懸停預覽 ----------
+const tip=document.getElementById('tip'),previewCache={};
+async function preview(path){
+  if(previewCache[path])return previewCache[path];
+  try{const r=await fetch(encodeURI(path));if(!r.ok)return '';
+    const t=(await r.text()).replace(/[#>*`|\[\]()]/g,'').replace(/\n+/g,' ').slice(0,220)+'…';
+    previewCache[path]=t;return t;
+  }catch(e){return ''}
+}
+function bindXLinks(curDir){
+  view.querySelectorAll('a').forEach(a=>{
+    const h=a.getAttribute('href')||'';
+    if(/\.mdx$/i.test(h)&&!/^https?:/i.test(h)){
+      a.removeAttribute('target');
+      a.addEventListener('click',e=>{e.preventDefault();location.hash='#/'+resolveRel(curDir,h)});
+      a.addEventListener('mouseenter',async e=>{
+        const t=await preview(resolveRel(curDir,h));
+        if(!t)return;tip.textContent=t;tip.style.display='block';
+        tip.style.left=Math.min(e.clientX+14,innerWidth-360)+'px';tip.style.top=(e.clientY+14)+'px';
+      });
+      a.addEventListener('mouseleave',()=>tip.style.display='none');
+    }
+  });
+}
+// ---------- 圖表 ----------
+function buildOption(spec){
+  const dark=document.documentElement.dataset.theme==='dark';
+  const ink=dark?'#e0e0e0':'#222';
+  const base={color:['#4477AA','#EE6677','#228833','#CCBB44','#66CCEE','#AA3377','#BBBBBB'],
+    title:{text:spec.title||'',left:'center',textStyle:{color:ink,fontSize:15}},
+    tooltip:{trigger:(spec.type==='pie'||spec.type==='donut')?'item':'axis'},textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'}};
+  if(spec.type==='pie'||spec.type==='donut'){
+    const radius=spec.type==='donut'?['42%','65%']:'60%';
+    return Object.assign(base,{legend:{textStyle:{color:ink}},series:[{type:'pie',radius,
+      data:(spec.series[0].data||[]).map(d=>({value:+d.value||0,name:d.name}))}]});
+  }
+  if(spec.type==='radar'){
+    return Object.assign(base,{legend:{textStyle:{color:ink}},
+      radar:{indicator:(spec.indicators||[]).map(n=>({name:n,max:spec.max||5}))},
+      series:[{type:'radar',areaStyle:{opacity:.2},
+        data:(spec.series||[]).map(s=>({name:s.name,value:(s.data||[]).map(Number)}))}]});
+  }
+  if(spec.type==='scatter'){
+    return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
+      xAxis:{type:'value',name:spec.xName||'',axisLabel:{color:ink}},
+      yAxis:{type:'value',name:spec.yName||'',axisLabel:{color:ink}},
+      series:(spec.series||[]).map(s=>({name:s.name,type:'scatter',symbolSize:10,data:s.data||[]}))});
+  }
+  if(spec.type==='heatmap'){
+    const xs=spec.x||[],ys=spec.y||[];
+    let vmax=0;(spec.series[0].data||[]).forEach(d=>{if(d[2]>vmax)vmax=d[2]});
+    return Object.assign(base,{grid:{containLabel:true},
+      xAxis:{type:'category',data:xs,axisLabel:{color:ink,interval:0,rotate:30}},
+      yAxis:{type:'category',data:ys,axisLabel:{color:ink}},
+      visualMap:{min:0,max:vmax||1,calculable:true,textStyle:{color:ink}},
+      series:[{type:'heatmap',data:spec.series[0].data||[],
+        label:{show:true},emphasis:{itemStyle:{shadowBlur:10}}}]});
+  }
+  if(spec.type==='map'){
+    return Object.assign(base,{tooltip:{trigger:'item'},textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'},
+      visualMap:{min:spec.min||0,max:spec.max||100,calculable:true,textStyle:{color:ink}},
+      series:[{type:'map',map:spec.map||'taiwan',roam:true,
+        data:(spec.series[0].data||[]).map(d=>({name:d.name,value:d.value==null?null:+d.value}))}]});
+  }
+  const mkMark=()=>spec.markAvg?{markLine:{symbol:'none',data:[{type:'average',name:'平均'}]}}:{};
+  const series=(spec.series||[]).map(s=>{
+    let t='bar';
+    if(spec.type==='line'||spec.type==='area')t='line';
+    if(s.chart==='line')t='line';if(s.chart==='bar')t='bar';
+    const o={name:s.name,type:t,data:(s.data||[]).map(v=>v===null?null:+v)};
+    if(spec.type==='area')o.areaStyle={opacity:.25};
+    if(spec.stack)o.stack='total';
+    if(typeof s.axis==='number')o.yAxisIndex=s.axis;
+    return Object.assign(o,mkMark());
+  });
+  const dual=series.some(s=>s.yAxisIndex===1);
+  const yAx=dual?[{type:'value',axisLabel:{color:ink}},{type:'value',axisLabel:{color:ink}}]:{type:'value',axisLabel:{color:ink}};
+  const cat={type:'category',data:spec.x||[],axisLabel:{color:ink}};
+  const isH=spec.type==='hbar';
+  return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
+    xAxis:isH?{type:'value',axisLabel:{color:ink}}:cat,
+    yAxis:isH?cat:yAx,series});
+}
+function initCharts(){
+  if(typeof echarts==='undefined')return;
+  document.querySelectorAll('#view .echart').forEach(el=>{
+    try{
+      const old=echarts.getInstanceByDom(el);if(old)old.dispose();
+      echarts.init(el).setOption(buildOption(JSON.parse(el.dataset.spec)));
+    }catch(e){el.outerHTML='<details><summary>圖表載入失敗，顯示原始資料</summary><pre>'+esc(el.dataset.spec)+'</pre></details>'}
+  });
+}
+// ---------- 來源編號 ----------
+function numberSources(){
+  let n=0,active=false;
+  for(const el of view.children){
+    if(/^H[1-6]$/.test(el.tagName)){
+      active=el.textContent.includes('來源');
+      if(active)n=0;
+      continue;
+    }
+    if(active&&el.tagName==='OL'){
+      el.querySelectorAll(':scope > li').forEach(li=>{n++;li.id='src-'+n});
+    }
+    if(active&&el.tagName==='UL'){
+      el.querySelectorAll(':scope > li').forEach(li=>{
+        const a=li.querySelector('a.cite');
+        if(a){const m=(a.getAttribute('href')||'').match(/#src-(\d+)/);if(m)li.id='src-'+m[1]}
+      });
+    }
+  }
+}
+// ---------- 反白查來源 ----------
+let srcMap=null,srcMapTried=false;
+async function getSrcMap(){
+  if(srcMap||srcMapTried)return srcMap;
+  srcMapTried=true;
+  try{const r=await fetch('source-map.json');if(r.ok)srcMap=await r.json()}catch(e){}
+  return srcMap;
+}
+function closeSrcPanel(){const p=document.getElementById('srcPanel');if(p)p.style.display='none'}
+async function lookupSources(){
+  const sel=(window.getSelection()||'').toString().trim();
+  if(sel.length<4)return;
+  const map=await getSrcMap();
+  let panel=document.getElementById('srcPanel');
+  if(!panel){panel=document.createElement('div');panel.id='srcPanel';document.body.appendChild(panel)}
+  if(!map){panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>無來源對照表</b>本案未附 source-map.json。';panel.style.display='block';return}
+  const key=sel.slice(0,30);
+  const hits=[];
+  for(const e of map){
+    const p=e.passage||'';
+    if(p.includes(key)||(p.length>20&&sel.includes(p.slice(0,20))))hits.push(e);
+    if(hits.length>=8)break;
+  }
+  if(!hits.length){panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>找不到對應來源</b>選取範圍無匹配段落。';panel.style.display='block';return}
+  panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>可能來源（查表，非生成）</b><ul>'+
+    hits.map(h=>(h.sources||[]).map(s=>'<li><a href="'+s.u+'" target="_blank">'+esc(s.t)+'</a></li>').join('')).join('')+'</ul>';
+  panel.style.display='block';
+}
+document.addEventListener('keydown',e=>{
+  const tag=(e.target&&e.target.tagName)||'';
+  if((e.key==='s'||e.key==='S')&&!e.ctrlKey&&!e.metaKey&&tag!=='INPUT'&&tag!=='TEXTAREA')lookupSources();
+  if(e.key==='Escape')closeSrcPanel();
+});
+// ---------- 路由 ----------
+let curDir='';
+function resolveRel(base,rel){
+  const b=base.split('/').filter(x=>x!=='');
+  rel.split('/').forEach(p=>{if(p==='..')b.pop();else if(p!=='.'&&p!=='')b.push(p)});
+  return b.join('/');
+}
+async function load(raw){
+  let path=raw,q='';
+  const qi=raw.indexOf('?q=');
+  if(qi>=0){path=raw.slice(0,qi);q=decodeURIComponent(raw.slice(qi+3))}
+  const meta=FLAT.find(f=>f.p===path);
+  document.querySelectorAll('aside a[data-path]').forEach(a=>a.classList.toggle('active',a.dataset.path===path));
+  document.getElementById('crumbs').textContent=meta?meta.sec+' › '+meta.t:'';
+  curDir=path.includes('/')?path.slice(0,path.lastIndexOf('/')+1):'';
+  try{
+    const r=await fetch(encodeURI(path));
+    if(!r.ok)throw 0;
+    view.innerHTML=renderMD(await r.text());
+    bindXLinks(curDir);
+    initCharts();
+    if(q)highlight(q);
+    buildTOC();
+    numberSources();
+    const idx=FLAT.findIndex(f=>f.p===path);
+    const pg=document.getElementById('pager');
+    if(idx>=0){
+      const prev=FLAT[idx-1],next=FLAT[idx+1];
+      pg.style.display='flex';
+      pg.innerHTML=(prev?'<a href="#/'+prev.p+'">← '+prev.t+'</a>':'<span></span>')+
+        (next?'<a href="#/'+next.p+'">'+next.t+' →</a>':'<span></span>');
+    }else pg.style.display='none';
+    const bl=document.getElementById('backlinks');
+    const bls=backlinksFor(path);
+    if(bls.length){bl.style.display='block';
+      bl.innerHTML='<b>引用本文的報告</b><ul>'+bls.map(k=>{
+        const m=FLAT.find(f=>f.p===k);return '<li><a href="#/'+k+'">'+(m?m.t:k)+'</a></li>'}).join('')+'</ul>';
+    }else bl.style.display='none';
+    window.scrollTo(0,0);
+    if(innerWidth<=800)nav.classList.remove('open');
+  }catch(e){
+    document.getElementById('banner').style.display='block';
+    view.innerHTML='<h1>載入失敗</h1><p>瀏覽器阻擋了本地檔案讀取。請雙擊工作區根目錄的 <code>start_server.bat</code>，再用開啟的網址瀏覽本站。</p>';
+  }
+}
+function route(){
+  const h=decodeURIComponent(location.hash||'');
+  if(h.startsWith('#/'))load(h.slice(2));
+  else if(/^#(h\d+|src-\d+)$/.test(h)){const el=document.getElementById(h.slice(1));if(el){el.scrollIntoView();return}}
+  else view.innerHTML='<div class="home"><h1>新竹捷運可行性研究報告</h1><p>查證基準日 2026-09-18｜結論：<b>有條件可行（B-，3.2/5）——可以蓋，但現在還不能動工。</b></p><p>點左側目錄，或按 <b>Ctrl+K</b> 全文搜尋。先讀總報告 → 查專章 → 看輿情M2 → 驗附錄原文。</p></div>';
+}
+window.addEventListener('hashchange',route);
+window.addEventListener('scroll',()=>{document.getElementById('toTop').style.display=scrollY>600?'block':'none'});
+document.getElementById('toTop').onclick=()=>scrollTo(0,0);
+route();
+if(location.protocol==='file:')document.getElementById('banner').style.display='block';
+setTimeout(buildIndex,1500);
+setTimeout(async()=>{
+  try{
+    if(typeof echarts==='undefined')return;
+    const r=await fetch('libs/taiwan-counties.geojson');
+    if(r.ok)echarts.registerMap('taiwan',await r.json());
+  }catch(e){}
+},1500);
+</script>
+</body>
+</html>
