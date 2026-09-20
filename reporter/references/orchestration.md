@@ -6,7 +6,7 @@
 
 ## Question Tree（機器中間件）
 
-`research/questions.jsonl`：每題 question_id／parent／text／importance（load_bearing 與否）／status／claims／opens。用來追蹤回答、餵 narrative 的 question cascade、找跳步與缺口。
+`research/questions.jsonl`：每題 question_id／parent／text／importance（load_bearing 與否）／status／claims／opens。用來追蹤回答、餵 narrative 的 question cascade、找跳步與缺口。全部 ledger schema（questions／claims／evidence／sources＋模型 artifacts）見 `artifacts.md`。
 
 ## 模型 Artifact（只生成 Router 選中的）
 
@@ -14,11 +14,11 @@ question_tree 必備；其餘按需：causal.json（nodes／edges 帶 relation�
 
 ## W1 方向清單（由 Router 驅動，不是自由切片）
 
-先讀 `research/routing.yaml`。primary model 決定必備片型：feasibility 按 decision／appraisal 或技術 feasibility 分岔（見 `reasoning-models.md`）；causal 必有現象／候選因／替代假設／反證片；mechanism 必有分層拆解片；investigation 必有時間線／文件鏈／涉事方片；landscape 必有分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的必查證據轉成片。每片必含：IN／OUT邊界、Research Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。有 epistemic 意義的 alternative／challenge／failure／coverage-gap 方向才保留席位，Mechanism、Landscape 沒有反方不硬湊。每組並發≤3。寫進 `00_方向.mdx`，不停等直接進W2。只判型準確但切片隨便，視為 W1 失敗。
+先讀 `research/routing.yaml`。primary model 決定必備片型：feasibility 按 decision／appraisal 或技術 feasibility 分岔（見 `reasoning-models.md`）；causal 必有現象／候選因／替代假設／反證片；mechanism 必有分層拆解片；investigation 必有時間線／文件鏈／涉事方片；landscape 必有分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的必查證據轉成片。每片必含：IN／OUT邊界、Research Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。DEEP＝抓全文做 claim 級驗證（含 provenance tracing、反證、entailment）；SCAN＝建覆蓋、找主要 actors／來源／假設，不做完整驗證。有 epistemic 意義的 alternative／challenge／failure／coverage-gap 方向才保留席位，Mechanism、Landscape 沒有反方不硬湊。每組並發≤3。寫進 `00_方向.mdx`，不停等直接進W2。只判型準確但切片隨便，視為 W1 失敗。
 
 ## W2 按片採集
 
-每片一路並行 background task，用免費或便宜模型。每路prompt必含：目標、產出檔路徑、條目格式、數量下限、語言（讀meta lang，全文統一，禁混用簡繁）、來源優先順序（見 `evidence.md`）、誠實缺口回報。研究方法、來源、報告結構由agent依題目自選，不硬性規定。收成後逐檔計數，未達下限加搜；登入牆反爬拿不到的，寫缺口不偽造連結。
+每片一路並行 background task，用免費或便宜模型。每路prompt必含：目標、產出檔路徑、coverage target（覆蓋哪些問題／主張／來源類型）、minimum evidence classes、critical source types、stop conditions、語言（讀meta lang，全文統一，禁混用簡繁）、來源優先順序（見 `evidence.md`）、誠實缺口回報。數量只做熔斷與明顯不足提醒，不是完成條件。研究方法、來源、報告結構由agent依題目自選，不硬性規定。收成後檢查覆蓋度，未達標加搜；登入牆反爬拿不到的，寫缺口不偽造連結。
 
 ### 反注入條款（每路研究prompt必備）
 

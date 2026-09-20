@@ -24,6 +24,7 @@ W0路由（`routing.md`）→ W1方向 → W2分片採集 → W3擴大 → W4缺
 
 - `orchestration.md`：波次、quota、停搜、熔斷、反注入、git歷史。
 - `routing.md`：W0輸出格式、source-map 穩定 ID。
+- `artifacts.md`：ledger 與模型 artifact 最小 schema。
 - `reasoning-models.md`：13 種研究模型定義。
 - `narrative-models.md`、`visual-models.md`：敘事與視覺路由。
 - `evidence.md`：Claim→Evidence→Origin、出處獨立性、來源分級。

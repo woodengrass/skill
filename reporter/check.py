@@ -65,15 +65,92 @@ try:
 except Exception as e:
     fail(f"source-map sample 讀取失敗: {e}")
 
-# routing.yaml 結構檢查（無 PyYAML 依賴，只驗必要 key 行）
+# routing.yaml：有 PyYAML 就真正 parse 驗型態，沒有就 fallback 結構檢查
 try:
-    ry = open(os.path.join(SAMP, "routing.sample.yaml"), encoding="utf-8-sig").read()
-    for k in ["primary_model:", "supporting_models:", "overlays:", "narrative_pattern:",
-              "required_artifacts:", "verification:", "presentation:"]:
-        if k not in ry:
-            fail(f"routing sample 缺 key: {k}")
+    import yaml  # type: ignore
+
+    _HAS_YAML = True
+except ImportError:
+    _HAS_YAML = False
+
+WS = os.environ.get("REPORTER_WS", "")
+
+
+def check_routing(text, where):
+    if _HAS_YAML:
+        try:
+            d = yaml.safe_load(text)
+        except Exception as e:
+            fail(f"{where} YAML parse 失敗: {e}")
+            return
+        for k in ["primary_model", "supporting_models", "overlays",
+                  "narrative_pattern", "required_artifacts",
+                  "verification", "presentation"]:
+            if k not in d:
+                fail(f"{where} 缺 key: {k}")
+        if not isinstance(d.get("supporting_models"), list):
+            fail(f"{where} supporting_models 非 list")
+        if not isinstance(d.get("verification"), dict):
+            fail(f"{where} verification 非 mapping")
+    else:
+        for k in ["primary_model:", "supporting_models:", "overlays:", "narrative_pattern:",
+                  "required_artifacts:", "verification:", "presentation:"]:
+            if k not in text:
+                fail(f"{where} 缺 key: {k}（無 PyYAML，只做結構檢查）")
+
+
+try:
+    check_routing(
+        open(os.path.join(SAMP, "routing.sample.yaml"), encoding="utf-8-sig").read(),
+        "routing sample",
+    )
 except Exception as e:
     fail(f"routing sample 讀取失敗: {e}")
+
+if WS:
+    rp = os.path.join(WS, "research", "routing.yaml")
+    if os.path.exists(rp):
+        try:
+            check_routing(open(rp, encoding="utf-8-sig").read(), "workspace routing.yaml")
+        except Exception as e:
+            fail(f"workspace routing 讀取失敗: {e}")
+    merged = []
+    for fn in ["questions.jsonl", "claims.jsonl", "evidence.jsonl", "sources.jsonl"]:
+        fp = os.path.join(WS, "research", fn)
+        if os.path.exists(fp):
+            try:
+                merged.extend(
+                    [json.loads(l) for l in open(fp, encoding="utf-8-sig") if l.strip()]
+                )
+            except Exception as e:
+                fail(f"workspace {fn} parse 失敗: {e}")
+    if merged:
+        claims, evids, srcs, questions = {}, {}, {}, {}
+        for e in merged:
+            for key, store, pat in [
+                ("claim_id", claims, r"C\d+"),
+                ("evidence_id", evids, r"E\d+"),
+                ("source_id", srcs, r"S\d+"),
+                ("question_id", questions, r"Q\d+"),
+            ]:
+                if key in e:
+                    if not re.fullmatch(pat, str(e[key])):
+                        fail(f"workspace {key} 格式非法: {e[key]}")
+                    store[str(e[key])] = e
+        for cid, c in claims.items():
+            for eid in c.get("evidence", []) + c.get("counterevidence", []):
+                if eid not in evids:
+                    fail(f"workspace claim {cid} 引用不存在 evidence: {eid}")
+            for qid in c.get("questions", []):
+                if qid not in questions:
+                    fail(f"workspace claim {cid} 引用不存在 question: {qid}")
+        for eid, e in evids.items():
+            if e.get("source_id") not in srcs:
+                fail(f"workspace evidence {eid} 引用不存在 source: {e.get('source_id')}")
+        for qid, q in questions.items():
+            for cid in q.get("claims", []):
+                if cid not in claims:
+                    fail(f"workspace question {qid} 引用不存在 claim: {cid}")
 
 # 2. 文件存在性
 for rel in [
@@ -135,6 +212,8 @@ pt = read("assets/portal-template.html")
 for feat in ["report-meta.json", "gaps.json", "document.title", "documentElement.lang", "safeUrl"]:
     if feat not in pt:
         fail(f"portal-template 缺實作: {feat}")
+if pt.count("right_of_reply") != 1:
+    fail("portal right_of_reply 渲染次數異常（應恰一次）")
 rt = read("assets/reader-template.html")
 if "safeUrl" not in rt:
     fail("reader-template 缺 safeUrl")

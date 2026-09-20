@@ -14,6 +14,7 @@ W5先建 Approved／Dropped 登記表，編號凍結，起草禁引 Dropped。�
 - partially supports：只支持一部分，縮小主張到被支持的範圍。
 - contradicts：換來源或刪除主張，二選一。
 - unrelated：換來源或刪除，二選一。
+- insufficient_context：來源可能相關但上下文不足以支持或反駁。處置：找完整上下文、找原始來源；否則 claim 保持 unresolved 或縮小，禁硬塞成 partial。
 
 URL活著不算驗證成功。判完回寫修正，partial 的縮小記錄在案。
 

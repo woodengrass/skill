@@ -102,7 +102,6 @@ function trustHtml(){
     ['原始來源比例', t.original_ratio||''],
     ['未決問題', (t.unresolved||[]).join('；')],
     ['對造回應', t.right_of_reply||''],
-    ['對造回應', t.right_of_reply||''],
     ['更新更正', (t.changelog||[]).join('；')]
   ].filter(r=>r[1]);
   if(!rows.length)return '<p>暫無額外說明，見內文。</p>';
