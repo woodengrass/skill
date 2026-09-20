@@ -31,7 +31,7 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 
 ## 呈現模式（同一證據核多視圖，不要全開）
 
-Quick、Deep、Evidence、Timeline、Disagreement、Updates 按 `routing.yaml` 開關。現狀：reader-template 只實作單文檔＋Evidence 雛形（source-map 反白查詢），多 tab 切換與獨立 story-template.html 屬 planned，文件不得寫成已有。
+Quick、Deep、Evidence、Timeline、Disagreement、Updates 是同一證據核的多視圖，按題目需要選開，不要全開。現狀：reader-template 只實作單文檔＋Evidence 雛形（source-map 反白查詢），多 tab 切換與獨立 story-template.html 屬 planned，文件不得寫成已有。
 
 ## Story／Dossier 分離
 
@@ -43,7 +43,7 @@ Quick、Deep、Evidence、Timeline、Disagreement、Updates 按 `routing.yaml` �
 
 ## 圖表圍欄（`chart` JSON）
 
-研究員只寫資料不寫JS。`type`: bar／hbar／line／area／pie／donut／radar／scatter／heatmap／map；`title`必須是結論句；`note`（方法＋截止日）必填；配色渲染器內建Paul Tol七色；bar零基線、pie超5片改bar；一節超4圖退回。map的name須為縣市繁中名（2014年界注意對齊）。
+研究員只寫資料不寫JS。`type`: bar／hbar／line／area／pie／donut／radar／scatter／heatmap／map；`note`（方法＋截止日）必填；配色渲染器內建Paul Tol七色；bar零基線。Choose chart type based on readability and the relationship being shown（pie 片數多時考慮 bar 等替代形式）；Avoid overcrowding, use small multiples or alternative forms when clearer（圖多時拆小多組或換形式，不數上限）；Prefer informative titles, use neutral descriptive titles when the evidence genuinely supports multiple interpretations。map的name須為縣市繁中名（2014年界注意對齊）。
 
 ## 部署
 

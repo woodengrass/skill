@@ -1,33 +1,10 @@
-# Routing（W0路由）
+# Reasoning Lens（可選的方法視角，不是必經路由）
 
-Router 判斷「這個問題需要什麼認知操作」，不靠關鍵字硬對（「為什麼不可行」可能是 feasibility 不是 causal）。
+判斷「這個問題需要什麼認知操作」，不靠關鍵字硬對（「為什麼不可行」可能是 feasibility 不是 causal）。但這只是思考輔助：**如果模型很明顯，直接研究即可，不必生成任何路由文件。**
 
-## 輸出（ research/routing.yaml ）
+只有題目模糊、多層、容易走偏時，才值得先做 orientation／premise check／broad search，再決定適合的方法；此時可選用 `reasoning-models.md` 中的方法，並可把決定記在 `research/routing.yaml`（格式示例見 `assets/schema-samples/routing.sample.yaml`）：primary 定主視角，supporting 處理子問題，overlays 橫切全案。
 
-```yaml
-primary_model: feasibility
-supporting_models: [comparative, causal]
-overlays: [distribution, scenario]
-narrative_pattern: question_cascade
-required_artifacts: [question_tree, option_matrix, constraint_map]
-verification: {needs_counterfactual: false, needs_right_of_reply: false,
-  needs_data_desk: true, needs_chronology: true}
-presentation: {quick: true, deep: true, dossier: true, evidence: true, timeline: false}
-```
-
-一個題目可多模型並存：primary 定主架構，supporting 處理子問題，overlays 橫切全案。研究中發現判型錯誤（什麼證據導致 reframe）允許重調並記錄，避免 sunk-cost。
-
-## Custom / Composite fallback
-
-13 種都不自然時才可用 `primary_model: custom` 或 `composite`，且必須加寫：
-
-```yaml
-custom_reasoning:
-  description: "這個研究需要什麼特殊推理"
-  why_existing_models_are_insufficient: "..."
-```
-
-不得當成逃避 routing 的預設。
+一個題目可多方法並存，也可以在研究途中取用、捨棄、重調（記錄什麼證據導致轉向即可）。13 種都不自然時可自建更適合題目的方法，不必硬套。`routing.yaml` 永遠 optional；check.py 不因缺少它而 fail。
 
 ## source-map 穩定 ID
 

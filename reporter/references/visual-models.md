@@ -1,4 +1,6 @@
-# Visual Models（圖只用在比文字有效處）
+# Visual Models（圖只用在比文字有效處；方法庫）
+
+以下 mapping 是推薦，不是必畫清單：畫圖的條件只有一個——Recommended when it communicates the relationship better than prose.
 
 ## 推薦 mapping
 

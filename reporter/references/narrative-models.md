@@ -1,6 +1,8 @@
-# Narrative Models（敘事是 presentation decision，不是 epistemic rule）
+# Narrative Models（可選的敘事 pattern 庫；Story Architect 的方法庫）
 
-每個 reasoning model 有推薦 narrative，但 Router 可依材料改用。預設推薦 question_cascade。
+These are reusable narrative patterns, not mandatory templates. Story Architect may combine, modify, or ignore them. 不預設每題必選一種。
+
+每個 reasoning model 有推薦 narrative，但可依材料改用。預設推薦 question_cascade（只是起點，不是義務）。
 
 - question_cascade：每答一問生下一問。適合 causal／mechanism／feasibility／system。
 - puzzle_to_resolution：先丟反直覺現象再解。適合 causal／system／contested claim。

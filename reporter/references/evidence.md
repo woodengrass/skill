@@ -1,4 +1,4 @@
-# Evidence（證據與出處模型）
+# Evidence（證據與出處 invariants）
 
 ## 核心模型：Claim → Evidence → Origin
 
@@ -10,10 +10,10 @@
 
 - 同一原始新聞稿被不同媒體轉載，只算一份 evidence。
 - 引用同一資料庫、同一調查、同一受訪內容的多個頁面，不得當成獨立驗證。
-- 轉述鏈每多一手，置信降一級；能找到原始出處就換原始出處。
+- 轉述鏈能找到原始出處就換原始出處；換不到時如實標轉述層級，不假裝獨立。
 - 同一機構不同時間的獨立調查算兩份；同一調查的不同報導不算兩份。
 
-## 出處優先順序（按主張類型找最接近原始觀測者）
+## 出處選擇（按主張類型找最接近原始觀測者）
 
 官方不是預設最高級。按主張類型找最接近原始觀測、具權威且可查核者：
 
@@ -23,9 +23,11 @@
 - 官方對自身政策成效、爭議、責任的自述，必須有獨立來源佐證才能立為結論，否則標為單方說法。
 - 民調看原始發布（方法、樣本、日期俱全）；媒體轉述只能立「曾報導」，不能立數字本身。
 
-## 來源評估（claim-relative 为主，數字級別只做初篩）
+## 來源品質（claim-relative 品質標準，不是搜尋順序）
 
-先看：source_role（對這個主張是原始觀測／轉述／評論／當事人說法）＋proximity_to_event＋method_transparency＋independence＋conflict_of_interest。1–5 級只做 retrieval 初篩（先抓 4–5，再補 3，2 只當線索，1 拒用），不做最終可信度；peer-reviewed paper 與 preprint 分開標，不混在同一級。
+Source quality is claim-relative. Prefer sources that most directly and transparently support the relevant claim. Consider proximity, methodology, independence, conflicts of interest, timeliness, and corroboration.
+
+這是品質標準，不是檢索流程：不規定先抓哪級、再補哪級。peer-reviewed paper 與 preprint 分開標，不混為一談。
 
 ## 來源家族合併
 

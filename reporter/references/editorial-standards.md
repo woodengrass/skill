@@ -1,6 +1,8 @@
 # Editorial Standards（審稿與約束分級）
 
-## 按 primary model 審稿（不只看文筆）
+## 審稿視角（用到的才審，不是每案全跑）
+
+題目用到了某種推理方法，才用對應視角審；沒用到的不硬審：
 
 - causal：因果鏈完整？alternative 處理了？
 - feasibility：baseline 存在？options 公平？switching conditions 清楚？

@@ -1,6 +1,6 @@
-# Reasoning Models（13 種，只定義研究方法，不定義文章模板）
+# Reasoning Models（可組合的研究方法庫）
 
-每種含：適用問題、核心研究問題、主要分析方法、必查證據、最常見錯誤、推薦 narrative（見 `narrative-models.md`）、推薦 visual。primary-capable 標 ★，通常只做 overlay 的標 ◇。
+以下 13 種是可選方法，不是必經流程。Agent 可以：不選任何模型、同時使用多個、研究途中再取用、捨棄原本使用的模型、自行建立更適合題目的方法。每種含：適用問題、核心研究問題、主要分析方法、必查證據、最常見錯誤、推薦 narrative（見 `narrative-models.md`）、推薦 visual。primary-capable 標 ★，通常只做 overlay 的標 ◇——星號只是使用頻率提示，不是選擇義務。
 
 ## 1. Causal 因果 ★
 

@@ -1,10 +1,16 @@
-# Artifacts（機器中間件 schema）
+# Artifacts（可選的機器中間件 schema）
 
-只定義跨階段互讀的最小欄位，不要巨型 schema。只生成 Router 選中的 artifact。
+Complex, long-running, multi-agent, high-risk, or incrementally updated research may externalize state using these schemas. 適合時使用，不適合時不要為了符合架構製造一堆空 JSON。簡單題目不用 ledger，直接研究即可。
 
-## Ledger（research/ 下必備）
+唯一強規範：如果 agent 決定使用某 artifact，其格式必須符合以下 schema，確保跨階段互讀。如果沒用 ledger，check.py 不應因此 fail。
 
-### questions.jsonl
+只定義跨階段互讀的最小欄位，不要巨型 schema。
+
+## Ledger（research/ 下按需使用）
+
+### questions.jsonl（複雜題推薦，簡單題不用）
+
+對複雜、多層、容易跳步的題目，Question Tree／Question Graph 是推薦工具：每題 question_id／parent／text／importance（load_bearing 與否）／status／claims／opens，用來追蹤回答、找跳步與缺口。簡單問題不用。
 
 ```json
 {"question_id": "Q0042", "parent_id": "Q0010", "text": "...",
@@ -50,7 +56,7 @@
 
 Question Tree 可引用 claim_id；模型 artifact 可引用 claim_id；Verification 結果必須回寫 ledger（status、entailment）；Story Architect 只讀最新狀態；source-map 由 passage→claim→evidence/source 關係生成，不重配。
 
-## 模型 Artifact 最小 schema（只生成選中的）
+## 模型 Artifact 最小 schema（決定用才生成）
 
 ### causal.json
 

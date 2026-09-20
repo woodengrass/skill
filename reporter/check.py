@@ -1,6 +1,14 @@
 """reporter skill 自檢：掃描 SKILL.md / references / assets 的 drift。
 
-用法：python check.py（在 skill 根目錄跑）
+責任＝輸出完整性（output / integrity checks），不驗 agent 是否照流程研究：
+- JSON/schema 可解析、source-map ID 與 links 合法、危險 URL scheme、
+  broken reference、重複出處、未解析的 artifact 引用、
+  模板實作漂移、presentation schema 不一致、最終 metadata 缺失、
+  虛構 placeholder／研究殘留。
+- internal ledger（questions/claims/evidence/sources 等）存在才驗 consistency；
+  沒用 ledger 不 fail。routing.yaml 缺失永不 fail，存在才驗格式。
+
+用法：python check.py（在 skill 根目錄跑）；驗工作區加 REPORTER_WS=路徑。
 失敗即列出違規，不合規則就修到通過為止。
 """
 
@@ -34,14 +42,43 @@ for rel in ["report-meta.json", "gaps.json", "source-map.json"]:
             fail(f"{rel} JSON parse 失敗: {e}")
 
 SAMP = os.path.join(ASSETS, "schema-samples")
+
+
+def check_meta(d, where):
+    for f in ["title", "date", "verdict", "lang", "summary", "trust", "kpis", "charts", "chapters"]:
+        if f not in d:
+            fail(f"{where} meta 缺欄位: {f}")
+    for f in ["cutoff", "sources", "original_ratio", "unresolved", "right_of_reply", "changelog"]:
+        if f not in d.get("trust", {}):
+            fail(f"{where} meta trust 缺欄位: {f}")
+
+
+DANGEROUS_URL = re.compile(r"(?i)\b(javascript|data|vbscript)\s*:")
+PLACEHOLDERS = ["TODO", "FIXME", "lorem ipsum"]
+
+
+def scan_workspace_json(obj, where):
+    """遞迴掃工作區 JSON/JSONL 的危險 scheme 與虛構 placeholder。"""
+    if isinstance(obj, dict):
+        for k, v in obj.items():
+            if isinstance(v, str) and k in ("url", "u", "href", "link"):
+                if DANGEROUS_URL.search(v):
+                    fail(f"{where} 危險 URL scheme: {v[:80]}")
+            else:
+                scan_workspace_json(v, where)
+    elif isinstance(obj, list):
+        for v in obj:
+            scan_workspace_json(v, where)
+    elif isinstance(obj, str):
+        for p in PLACEHOLDERS:
+            if p in obj:
+                fail(f"{where} 含未清 placeholder: {p}")
+                break
+
+
 try:
     meta = json.load(open(os.path.join(SAMP, "report-meta.sample.json"), encoding="utf-8-sig"))
-    for f in ["title", "date", "verdict", "lang", "summary", "trust", "kpis", "charts", "chapters"]:
-        if f not in meta:
-            fail(f"meta sample 缺欄位: {f}")
-    for f in ["cutoff", "sources", "original_ratio", "unresolved", "right_of_reply", "changelog"]:
-        if f not in meta.get("trust", {}):
-            fail(f"meta trust 缺欄位: {f}")
+    check_meta(meta, "meta sample")
 except Exception as e:
     fail(f"meta sample 讀取失敗: {e}")
 
@@ -127,6 +164,7 @@ if WS:
     if merged:
         claims, evids, srcs, questions = {}, {}, {}, {}
         for e in merged:
+            scan_workspace_json(e, "workspace ledger")
             for key, store, pat in [
                 ("claim_id", claims, r"C\d+"),
                 ("evidence_id", evids, r"E\d+"),
@@ -151,6 +189,42 @@ if WS:
             for cid in q.get("claims", []):
                 if cid not in claims:
                     fail(f"workspace question {qid} 引用不存在 claim: {cid}")
+        # 重複出處：同一 URL 掛多個 source_id 卻分屬不同家族＝假裝獨立
+        by_url = {}
+        for sid, s in srcs.items():
+            u = (s.get("url") or "").strip().rstrip("/")
+            if u:
+                by_url.setdefault(u, []).append(sid)
+        for u, sids in by_url.items():
+            fams = {srcs[s].get("provenance_family") for s in sids}
+            if len(sids) > 1 and len(fams) > 1:
+                fail(f"workspace 同一 URL 拆多 source 且家族不同（假獨立）: {u[:80]} {sids}")
+    # 工作區最終 metadata：存在才驗格式（研究中缺檔不 fail），錯了才 fail
+    for rel, kind in [("report-meta.json", "meta"), ("gaps.json", "gaps"),
+                      ("source-map.json", "sourcemap")]:
+        fp = os.path.join(WS, rel)
+        if not os.path.exists(fp):
+            continue
+        try:
+            d = json.load(open(fp, encoding="utf-8-sig"))
+        except Exception as e:
+            fail(f"workspace {rel} JSON parse 失敗: {e}")
+            continue
+        scan_workspace_json(d, f"workspace {rel}")
+        if kind == "meta":
+            check_meta(d, "workspace report-meta.json")
+        elif kind == "gaps":
+            for i, g in enumerate(d):
+                if "item" not in g:
+                    fail(f"workspace gaps[{i}] 缺 item")
+                if g.get("status") not in ("pending", "dropped", "deferred"):
+                    fail(f"workspace gaps[{i}] status 非法: {g.get('status')}")
+        elif kind == "sourcemap":
+            for i, e in enumerate(d):
+                if not re.fullmatch(r"P\d+", e.get("id", "")):
+                    fail(f"workspace source-map[{i}] id 非 P0001 格式")
+                if "passage" not in e or "sources" not in e:
+                    fail(f"workspace source-map[{i}] 缺 passage/sources")
 
 # 2. 文件存在性
 for rel in [
@@ -174,7 +248,8 @@ for rel in [
     if not os.path.exists(os.path.join(ROOT, rel)):
         fail(f"缺檔案: {rel}")
 
-# 3. 舊規則 denylist（任一出現即 fail，含 SKILL）
+# 3. 舊規則 denylist（任一出現即 fail，含 SKILL）。
+# 前段是已移除的寫作舊規則；後段是本輪移除的研究端硬約束，回歸即 fail。
 DENY = [
     "反方證據已找到",
     "每節三件套",
@@ -186,6 +261,26 @@ DENY = [
     "同行評議預印本",
     "82 / 100",
     "不確定性只進固定位置",
+    "每組並發",
+    "上限3輪",
+    "重構≤50%",
+    "熔斷片過半",
+    "每章至少抽",
+    "反方五問",
+    "一節超4圖",
+    "超5片改bar",
+    "必須是結論句",
+    "不超過2段",
+    "手機端2-4行",
+    "死亡數不取整",
+    "下必備",
+    "必備片型",
+    "每片必含",
+    "（必跑）",
+    "每案必跑",
+    "硬性規定",
+    "先抓 4",
+    "線性執行",
 ]
 for dp, _, fns in os.walk(REFS):
     for fn in sorted(fns):
