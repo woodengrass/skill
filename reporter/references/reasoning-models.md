@@ -13,7 +13,7 @@
 
 ## 2. Mechanism 機制 ★
 
-- 適用：它到底怎麼運作（升息如何影響消費、EUV 光源產生）。
+- 適用：它到底怎麼運作。
 - 核心：X 透過什麼中間步驟產生 Y。拆 inputs／components／activities／organization／intermediate states／constraints／outputs／failure modes。
 - 方法：progressive zoom 黑箱逐層打開，最後組回整體。
 - 必查：每層輸入輸出是否閉環、約束條件、失效模式。
