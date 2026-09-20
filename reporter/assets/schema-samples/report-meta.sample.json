@@ -1,0 +1,19 @@
+{
+  "title": "範例題目",
+  "date": "2026-09-19",
+  "verdict": "有條件可行",
+  "lang": "zh-Hant",
+  "footer": "結論以內文證據為準。",
+  "summary": [{"k": "需求", "v": "成立", "d": "關鍵數字"}],
+  "trust": {
+    "cutoff": "2026-09-19",
+    "sources": ["市府統計"],
+    "original_ratio": "60%",
+    "unresolved": ["機廠地號待確認"],
+    "right_of_reply": "n/a",
+    "changelog": []
+  },
+  "kpis": [{"n": "105萬", "l": "人口"}],
+  "charts": [],
+  "chapters": [{"t": "總報告", "d": "結論", "path": "index.html#/report.mdx"}]
+}

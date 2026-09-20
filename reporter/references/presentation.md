@@ -19,6 +19,7 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
   "summary": [{"k": "維度", "v": "一句判斷", "d": "關鍵數字"}],
   "trust": {"cutoff": "資料截止日", "sources": ["主要證據"],
     "original_ratio": "原始來源比例", "unresolved": ["未決問題"],
+    "right_of_reply": "是否取得對造回應（無涉事指控寫 n/a）",
     "changelog": ["更新更正"]},
   "kpis": [{"n": "數字", "l": "標籤"}],
   "charts": ["同chart圍欄spec"],
@@ -26,7 +27,7 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 }
 ```
 
-入口渲染：執行摘要卡、可信度說明（讀 trust）、KPI、圖表、章節卡、缺口區（讀 `gaps.json`）。完善度分數只放內部／debug，不對讀者顯示百分比。`document.title` 與 `<html lang>` 由 meta 動態設定。
+入口渲染：執行摘要卡、可信度說明（讀 trust）、KPI、圖表、章節卡、缺口區（讀 `gaps.json`）。完善度分數只放內部／debug，不對讀者顯示百分比。`document.title` 與 `<html lang>` 由 meta 動態設定。meta 的 `lang` 只決定正文語言；reader 與 portal 的 UI chrome 維持繁中，不做三語 UI（真要做才另開 i18n 工程）。
 
 ## 呈現模式（同一證據核多視圖，不要全開）
 

@@ -1,0 +1,23 @@
+primary_model: feasibility
+supporting_models:
+  - comparative
+  - causal
+overlays:
+  - distribution
+  - scenario
+narrative_pattern: question_cascade
+required_artifacts:
+  - question_tree
+  - option_matrix
+  - constraint_map
+verification:
+  needs_counterfactual: false
+  needs_right_of_reply: false
+  needs_data_desk: true
+  needs_chronology: true
+presentation:
+  quick: true
+  deep: true
+  dossier: true
+  evidence: true
+  timeline: false

@@ -19,4 +19,4 @@ presentation: {quick: true, deep: true, dossier: true, evidence: true, timeline:
 
 ## source-map 穩定 ID
 
-`source-map.json` 條目格式：`[{id, passage, sources:[{t, u}]}]`，id 為 S01、S02…穩定編號。閱讀器反白查詢先對 id（內文錨有 id 时），無 id 才對 passage 文字模糊匹配。禁只用段落前 40 字當 key。
+`source-map.json` 條目格式：`[{id, passage, sources:[{t, u}]}]`，id 為 P0001… passage ID（`S` 保留給 source）。閱讀器反白查詢先對 id（內文錨有 id 时），無 id 才對 passage 文字模糊匹配。禁只用段落前 40 字當 key。

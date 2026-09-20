@@ -126,7 +126,8 @@ applyTheme(localStorage.getItem('theme')||(matchMedia('(prefers-color-scheme: da
 document.getElementById('themeBtn').onclick=()=>{applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');initCharts()};
 document.getElementById('burger').onclick=()=>nav.classList.toggle('open');
 // ---------- Markdown 渲染 ----------
-function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function safeUrl(u){u=String(u||'');if(/^(https?:\/\/[^\\s"'<>\\]+|\/[^\/\\][^\\"'<>]*|[^:\/\\?"'<>][^\\"'<>]*)$/.test(u))return u;return '#'}
 function inline(s){
   s=esc(s);
   const codes=[];s=s.replace(/`([^`]+)`/g,(m,c)=>{codes.push(c);return ' '+(codes.length-1)+' '});
@@ -405,7 +406,7 @@ async function lookupSources(){
   }
   if(!hits.length){panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>找不到對應來源</b>選取範圍無匹配段落。';panel.style.display='block';return}
   panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>可能來源（查表，非生成）</b><ul>'+
-    hits.map(h=>(h.sources||[]).map(s=>'<li><a href="'+s.u+'" target="_blank">'+esc(s.t)+'</a></li>').join('')).join('')+'</ul>';
+    hits.map(h=>(h.sources||[]).map(s=>'<li><a href="'+safeUrl(s.u)+'" target="_blank">'+esc(s.t)+'</a></li>').join('')).join('')+'</ul>';
   panel.style.display='block';
 }
 document.addEventListener('keydown',e=>{

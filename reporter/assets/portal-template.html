@@ -26,9 +26,7 @@ h2{font-size:1.2em;margin:32px 0 12px}
 .card .k{font-size:.8em;color:var(--mut)}
 .card .v{font-size:1.05em;font-weight:bold;margin:4px 0}
 .card .d{font-size:.85em;opacity:.85}
-.scorebar{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
-.scorebar .track{height:12px;background:var(--line);border-radius:6px;overflow:hidden}
-.scorebar .fill{height:100%;background:var(--acc)}
+.trustbox{background:var(--card);border-radius:10px;padding:16px 18px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .kpis{display:flex;gap:10px;flex-wrap:wrap}
 .kpi{flex:1;min-width:140px;background:var(--card);border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.1)}
 .kpi .n{font-size:1.5em;font-weight:bold;color:var(--acc)}
@@ -53,7 +51,8 @@ footer{margin:32px 0 8px;font-size:.8em;color:var(--mut);text-align:center}
 <script src="libs/echarts.min.js"></script>
 <script>
 const PALETTE=['#4477AA','#EE6677','#228833','#CCBB44','#66CCEE','#AA3377','#BBBBBB'];
-const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+function safeUrl(u){u=String(u||'');if(/^(https?:\/\/[^\s"'<>\\]+|\/[^\/\\][^"'<>]*|[^:\/\\?"'<>][^"'<>]*)$/.test(u))return u;return '#';}
 function theme(){return document.documentElement.dataset.theme==='dark'}
 function applyTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem('theme',t);
   document.getElementById('themeBtn').textContent=t==='dark'?'☀️ 淺色':'🌙 深色';draw()}
@@ -71,6 +70,12 @@ function optionFor(spec,ink){
       radar:{indicator:(spec.indicators||[]).map(n=>({name:n,max:spec.max||5}))},
       series:[{type:'radar',areaStyle:{opacity:.2},
         data:(spec.series||[]).map(s=>({name:s.name,value:(s.data||[]).map(Number)}))}]});
+  }
+  if(spec.type==='map'){
+    return Object.assign(base,{tooltip:{trigger:'item'},
+      visualMap:{min:spec.min||0,max:spec.max||100,textStyle:{color:ink}},
+      series:[{type:'map',map:spec.map||'taiwan',roam:true,
+        data:(spec.series[0].data||[]).map(d=>({name:d.name,value:d.value==null?null:+d.value}))}]});
   }
   const series=(spec.series||[]).map(s=>({name:s.name,
     type:spec.type==='line'?'line':'bar',data:(s.data||[]).map(v=>v===null?null:+v))}));
@@ -96,6 +101,8 @@ function trustHtml(){
     ['主要證據', (t.sources||[]).join('、')],
     ['原始來源比例', t.original_ratio||''],
     ['未決問題', (t.unresolved||[]).join('；')],
+    ['對造回應', t.right_of_reply||''],
+    ['對造回應', t.right_of_reply||''],
     ['更新更正', (t.changelog||[]).join('；')]
   ].filter(r=>r[1]);
   if(!rows.length)return '<p>暫無額外說明，見內文。</p>';
@@ -116,14 +123,14 @@ async function main(){
     '<h2>執行摘要</h2><div class="cards">'+(META.summary||[]).map(c=>
       '<div class="card"><div class="k">'+esc(c.k)+'</div><div class="v">'+esc(c.v)+
       '</div><div class="d">'+esc(c.d||'')+'</div></div>').join('')+'</div>'+
-    '<h2>可信度說明</h2><div class="scorebar">'+trustHtml()+'</div>'+
+    '<h2>可信度說明</h2><div class="trustbox">'+trustHtml()+'</div>'+
     '<h2>關鍵指標</h2><div class="kpis">'+(META.kpis||[]).map(k=>
       '<div class="kpi"><div class="n">'+esc(k.n)+'</div><div class="l">'+esc(k.l)+'</div></div>').join('')+'</div>'+
     '<h2>圖表</h2><div class="charts">'+(META.charts||[]).map((c,i)=>
       '<div class="chartbox"><div class="echart" id="c'+i+'"></div>'+
       (c.note?'<div class="chartnote">'+esc(c.note)+'</div>':'')+'</div>').join('')+'</div>'+
     '<h2>章節</h2><div class="chapters">'+(META.chapters||[]).map(c=>
-      '<a href="'+esc(c.path)+'"><b>'+esc(c.t)+'</b><small>'+esc(c.d||'')+'</small></a>').join('')+'</div>'+
+      '<a href="'+safeUrl(c.path)+'"><b>'+esc(c.t)+'</b><small>'+esc(c.d||'')+'</small></a>').join('')+'</div>'+
     '<h2>缺口與未決</h2><div id="gaps"><p>載入中…</p></div>'+
     '<footer>'+esc(META.footer||'結論以內文證據為準。')+'</footer>';
   try{
@@ -134,6 +141,10 @@ async function main(){
         '<li>'+esc(g.item||'')+'（'+esc(g.status||'')+'）</li>').join('')+'</ul>';
     }else{document.getElementById('gaps').innerHTML='<p>無缺口紀錄。</p>'}
   }catch(e){document.getElementById('gaps').innerHTML='<p>無缺口紀錄。</p>'}
+  try{
+    const mr=await fetch('libs/taiwan-counties.geojson');
+    if(mr.ok&&typeof echarts!=='undefined')echarts.registerMap('taiwan',await mr.json());
+  }catch(e){}
   draw();
 }
 main();

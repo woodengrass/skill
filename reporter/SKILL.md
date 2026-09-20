@@ -11,10 +11,9 @@ description: Use ONLY when the user explicitly requests reporter via /reporter o
 
 ## 啟動
 
-- 題目必填，一句話。
-- 第一題問語言（繁體中文→zh-Hant／简体中文→zh-Hans／English→en），寫進 `report-meta.json`。
-- 第二題問廣度（低／中／高），第三題問深度（低／中／高）。三題問完不再問。
-- 廣度＝方向數量：低3-4片只 cover主幹／中5-8片主幹加兩側／高10片以上連邊角都收。
+- 題目必填，一句話。語言直接從使用者輸入推斷（寫進 `report-meta.json` 的 `lang`，不要問）。
+- 研究強度由題目複雜度自動決定（見管線與廣深預設），只在使用者明確要求省成本時調低；廣度／深度選項僅做 optional override，不主動追問。
+- 廣度＝方向數量：低只 cover 主幹／中主幹加兩側／高連邊角都收。
 - 深度＝研究嚴格程度：低答核心問題、少量高品質來源；中測主要替代解釋、找第一手、做必要 cross-check；高完整 question coverage、alternative hypotheses、provenance tracing、adversarial search、model-specific sensitivity。來源數只是 guardrail。
 
 ## 管線
@@ -36,5 +35,5 @@ W0路由（`routing.md`）→ W1方向 → W2分片採集 → W3擴大 → W4缺
 ## 最高鐵律
 
 - Strong constraints on truth；weak constraints on storytelling。
-- 正文只留結果；過程 metadata 永不進正文；不確定性只進固定位置。
+- 正文只留結果；過程 metadata 永不進正文；material uncertainty 在最接近相關 claim 的位置呈現，全局限制才集中整理。
 - 同一規則只有一個 authoritative definition，其他文件用引用指向它。

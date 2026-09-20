@@ -7,7 +7,7 @@
 - 適用：為什麼 X 發生（漲價、衰退、上升）。
 - 核心：哪些因素真的造成結果？如何作用？區分 root cause／proximate cause／trigger／enabling condition／amplifier／feedback／consequence／confounder／non-causal correlation。
 - 方法：建 competing explanations（H1/H2/H3…），重要 edge 標 observed／strongly_supported／plausible／speculative；停止前至少測試主要 alternative hypotheses。
-- 必查：時間先後、劑量反應、機制合理性、反例。
+- 必查：時間先後、機制合理性、反例；劑量反應只在領域適用時查（宏觀／制度／歷史題改用 temporal precedence、confounding、reverse causality、counterfactual、robustness）。
 - 最常見錯誤：相關性直接畫成因果箭頭。
 - 推薦 narrative：puzzle_to_resolution；visual：causal graph／driver tree／timeline。
 
@@ -42,7 +42,7 @@
 
 - 適用：在什麼條件下可行（捷運、政策、方案）。
 - 核心：objective／baseline（什麼都不做會怎樣）／options／critical success factors／demand／technical／finance／regulation／risk／alternatives／sensitivity／switching values。
-- 方法：必含 BAU、minimum intervention、main proposal、credible alternatives 四角比較；禁只評估預先偏好方案；禁輸出難解釋的單一總分，寫哪些維度成立、什麼條件翻盤。
+- 方法：decision／appraisal 型必須有 baseline 與 credible alternatives（BAU、minimum intervention、main proposal 四角比較）；技術 feasibility 依問題建立比較集，不硬套公共投資 appraisal。禁只評估預先偏好方案；禁輸出難解釋的單一總分，寫哪些維度成立、什麼條件翻盤。
 - 必查：需求證據、工程約束原文、財務假設、法規門檻、替代方案成本。
 - 最常見錯誤：沒有 baseline；沒有可信替代方案。
 - 推薦 narrative：constraint_cascade；visual：constraint map／option matrix／sensitivity chart。

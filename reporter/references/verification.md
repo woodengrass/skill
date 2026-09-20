@@ -1,6 +1,6 @@
 # Verification（W5查核）
 
-全用便宜agent，貴模型全關。查核對象是主張，不是URL。數字解讀另見 `data-verification.md`；審稿標準見 `editorial-standards.md`。
+預設便宜：mechanical checks（連結存活、格式、差集）全用便宜agent。ambiguous entailment、複雜統計、因果爭議、高風險 allegation 允許 escalation（用更強模型或人工複核），不硬撐。查核對象是主張，不是URL。數字解讀另見 `data-verification.md`；審稿標準見 `editorial-standards.md`。
 
 ## 引用鎖定
 
@@ -23,7 +23,7 @@ URL活著不算驗證成功。判完回寫修正，partial 的縮小記錄在案
 
 ## 紅隊（證據制，不投票）
 
-只對高風險主張開；無高風險用反方五問代替。Challenger 提交必須含：challenged_claim_id、specific_objection、new_evidence、origin、entailment、why_it_changes_claim。空泛「可能有其他解釋」直接 discard。裁決看 provenance、測量品質、entailment、獨立性、時效、解釋力，不看票數。contest 才加輪；論點不再推進就停，硬上限3輪（熔斷線非精確閾值）；停火標 GENUINELY_UNCERTAIN 並寫下何種證據可解。異議原文寫進「核心爭議」區。
+只對高風險主張開；無高風險用反方五問代替。Challenger 提交必須含：challenged_claim_id、specific_objection、supporting_evidence_or_reasoning（新證據，或具體可查核的方法論問題如分母錯誤、selection bias、反向因果、identification 不成立）、origin、entailment、why_it_changes_claim。空泛「可能有其他解釋」直接 discard。裁決看 provenance、測量品質、entailment、獨立性、時效、解釋力，不看票數。contest 才加輪；論點不再推進就停，硬上限3輪（熔斷線非精確閾值）；停火標 GENUINELY_UNCERTAIN 並寫下何種證據可解。異議原文寫進「核心爭議」區。
 
 ## 連結驗證波（報告完成後必跑）
 

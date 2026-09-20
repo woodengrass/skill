@@ -14,7 +14,7 @@ question_tree 必備；其餘按需：causal.json（nodes／edges 帶 relation�
 
 ## W1 方向清單（由 Router 驅動，不是自由切片）
 
-先讀 `research/routing.yaml`。primary model 決定必備片型：feasibility 必有需求／BAU／主要方案／可信替代／約束／財務／敏感度片；causal 必有現象／候選因／替代假設／反證片；mechanism 必有分層拆解片；investigation 必有時間線／文件鏈／涉事方片；landscape 必有分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的必查證據轉成片。每片必含：IN／OUT邊界、Decision Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。至少保留一席反方／風險方向。每組並發≤3。寫進 `00_方向.mdx`，不停等直接進W2。只判型準確但切片隨便，視為 W1 失敗。
+先讀 `research/routing.yaml`。primary model 決定必備片型：feasibility 按 decision／appraisal 或技術 feasibility 分岔（見 `reasoning-models.md`）；causal 必有現象／候選因／替代假設／反證片；mechanism 必有分層拆解片；investigation 必有時間線／文件鏈／涉事方片；landscape 必有分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的必查證據轉成片。每片必含：IN／OUT邊界、Research Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。有 epistemic 意義的 alternative／challenge／failure／coverage-gap 方向才保留席位，Mechanism、Landscape 沒有反方不硬湊。每組並發≤3。寫進 `00_方向.mdx`，不停等直接進W2。只判型準確但切片隨便，視為 W1 失敗。
 
 ## W2 按片採集
 
@@ -30,7 +30,7 @@ Quota 只是最低保障和熔斷參考，不是完成條件。正常完成需�
 
 ## W4 缺口補齊
 
-讀完全部產出，列缺口清單逐條銷帳（補上／仍缺＋申請路徑）。銷完寫 `gaps.json`，不進正文。
+讀完全部產出，列缺口清單逐條銷帳（補上／仍缺＋申請路徑）。銷完寫 `gaps.json`，不進正文。`gaps.json` authoritative schema：`[{item, status}]`，`status` 限 `pending`／`dropped`／`deferred` 三值；缺 `item` 或 status 非法即驗證失敗。
 
 ## W5 交叉驗證＋總報告
 
@@ -42,7 +42,7 @@ Story Architect 只讀 primary_model、question_tree、模型 artifact、verifie
 
 ## W6 增量更新（工作區已存在才走）
 
-方向沿用（改方向視同新案），搜索窗口限基準日之後，只patch受影響節，查證基準日更新，W3/W5只跑受影響部分。
+方向沿用，但新證據允許 versioned reframe（記錄什麼證據觸發、改了什麼、前版保留在 git）；只有研究問題本身換掉才算新案。搜索窗口限基準日之後，只patch受影響節，查證基準日更新，W3/W5只跑受影響部分。
 
 ## 收尾
 
