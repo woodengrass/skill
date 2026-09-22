@@ -22,6 +22,16 @@
 
 hallucination／unsupported causality／fake source independence／fabricated quote／fabricated scene／misleading statistics／unsupported allegation／citation mismatch／chronology error／unresolved high-risk contradiction。犯一條即退回。
 
+## Anti-anchoring（Structural Editor 最後檢查）
+
+> Initial framing is a hypothesis, not an obligation.
+
+- 文章是否只是證明一開始想講的故事？
+- 是否有重要 evidence 因不符合 opening frame 被忽略？
+- 研究中產生的重要 reframe 是否反映在成稿？
+- 競爭解釋是否被公平表示？
+- final narrative 是否讓 chronology／causality 看起來比 evidence 更確定？
+
 ## Weak constraints on storytelling（不硬限制）
 
 每章幾段、每段幾個數字、每章是否有人物反方、標題形式、是否 scene lede、是否 recommendation、是否評分。不為形式完整加儀式。

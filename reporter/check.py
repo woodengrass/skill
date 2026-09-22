@@ -114,26 +114,19 @@ WS = os.environ.get("REPORTER_WS", "")
 
 
 def check_routing(text, where):
+    # routing 是 optional working note：只驗「存在時可解析」，不要求任何 key、
+    # 不要求 agent 一定生成。絕不新增要求特定 research artifact 的檢查。
     if _HAS_YAML:
         try:
             d = yaml.safe_load(text)
         except Exception as e:
             fail(f"{where} YAML parse 失敗: {e}")
             return
-        for k in ["primary_model", "supporting_models", "overlays",
-                  "narrative_pattern", "required_artifacts",
-                  "verification", "presentation"]:
-            if k not in d:
-                fail(f"{where} 缺 key: {k}")
-        if not isinstance(d.get("supporting_models"), list):
-            fail(f"{where} supporting_models 非 list")
-        if not isinstance(d.get("verification"), dict):
-            fail(f"{where} verification 非 mapping")
+        if d is not None and not isinstance(d, dict):
+            fail(f"{where} 不是 mapping")
     else:
-        for k in ["primary_model:", "supporting_models:", "overlays:", "narrative_pattern:",
-                  "required_artifacts:", "verification:", "presentation:"]:
-            if k not in text:
-                fail(f"{where} 缺 key: {k}（無 PyYAML，只做結構檢查）")
+        if not text.strip():
+            fail(f"{where} 空檔（無 PyYAML，只做非空檢查）")
 
 
 try:

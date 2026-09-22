@@ -12,6 +12,8 @@ Complex, long-running, multi-agent, high-risk, or incrementally updated research
 
 對複雜、多層、容易跳步的題目，Question Tree／Question Graph 是推薦工具：每題 question_id／parent／text／importance（load_bearing 與否）／status／claims／opens，用來追蹤回答、找跳步與缺口。簡單問題不用。
 
+> Seed → Evolving Question Graph：第一次生成的 Question Tree 不是正式研究藍圖，而是 evolving research state。研究中可新增／合併／拆分 question、升降 importance、關閉錯誤 question、重新掛 parent。例：Q3「AI demand 是否造成 DRAM 漲價」太粗，可演化為 Q3a HBM 排擠、Q3b DDR4 供給退出貢獻、Q3c 不同產品不同機制。Question Tree 是研究記憶，不是 pre-search contract。
+
 ```json
 {"question_id": "Q0042", "parent_id": "Q0010", "text": "...",
  "importance": "load_bearing", "status": "answered",
@@ -52,9 +54,17 @@ Complex, long-running, multi-agent, high-risk, or incrementally updated research
 
 `source_role` 常見值：primary_document／primary_data／firsthand_statement／original_reporting／academic_peer_reviewed／academic_preprint／secondary_analysis／commentary／lead_only。Origin 不獨立成檔；`origin_id`＋`provenance_family` 已足夠表達家族，未來需要 richer origin graph 才新增 `origins.jsonl`。
 
-## Ledger 唯一性規則
+## Ledger 使用規則（when a ledger is used）
 
-Question Tree 可引用 claim_id；模型 artifact 可引用 claim_id；Verification 結果必須回寫 ledger（status、entailment）；Story Architect 只讀最新狀態；source-map 由 passage→claim→evidence/source 關係生成，不重配。
+以下規則只在有用 ledger 時成立。不用 ledger 時，agent 可直接從已驗證 research material 建 source-map，不應為了 verification 或 publishing 被迫建立 ledger。
+
+Question Tree 可引用 claim_id；模型 artifact 可引用 claim_id；when a ledger is used，verification 應更新其最新狀態，downstream artifacts 應取用該最新狀態；Story Architect 只讀最新狀態；source-map 由 passage→claim→evidence/source 關係生成，不重配。
+
+## source-map.json（最終 evidence／presentation contract）
+
+authoritative definition 在此（原屬 routing，搬至此處；routing.md 只留 reasoning-lens 內容）。
+
+`source-map.json` 條目格式：`[{id, passage, sources:[{t, u}]}]`，id 為 P0001… passage ID（`S` 保留給 source）。閱讀器反白查詢先對 id（內文錨有 id 时），無 id 才對 passage 文字模糊匹配。禁只用段落前 40 字當 key。
 
 ## 模型 Artifact 最小 schema（決定用才生成）
 
@@ -105,3 +115,41 @@ confidence: observed／strongly_supported／plausible／speculative。
 ```
 
 無 probabilistic forecasting model 禁加 probability。
+
+## Orientation artifact（optional，用才守格式）
+
+只有 long-running／complex／unfamiliar／multi-agent／容易重新 framing 的案子才值得 externalized orientation state；不需要就不用生成。不要求填滿；除 `central_question` 外全部欄位 optional。
+
+`research/orientation.yaml` 最小格式：
+
+```yaml
+central_question: "..."
+
+scope_notes:
+  - "..."
+
+key_terms:
+  - "..."
+
+major_dimensions:
+  - "..."
+
+source_families:
+  - "..."
+
+candidate_explanations:
+  - "..."
+
+hidden_premises:
+  - "..."
+
+important_unknowns:
+  - "..."
+
+candidate_lenses:
+  - causal
+  - system
+
+routing_implications:
+  - "..."
+```

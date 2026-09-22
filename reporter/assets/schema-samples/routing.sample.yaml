@@ -1,23 +1,25 @@
-primary_model: feasibility
-supporting_models:
+routing_state: working
+
+reasoning_lenses:
+  - feasibility
   - comparative
   - causal
-overlays:
-  - distribution
-  - scenario
-narrative_pattern: question_cascade
-required_artifacts:
-  - question_tree
-  - option_matrix
-  - constraint_map
-verification:
-  needs_counterfactual: false
-  needs_right_of_reply: false
-  needs_data_desk: true
-  needs_chronology: true
-presentation:
-  quick: true
-  deep: true
-  dossier: true
-  evidence: true
-  timeline: false
+
+# provisional only：final narrative 由 Story Architect 後期決定
+narrative_hint: question_cascade
+
+notes:
+  - "主線用 feasibility 比較 baseline 與替代方案"
+  - "縣市比較用 comparative 同標準走完"
+
+routing_basis:
+  - "初步資料顯示不同路段有不同財務約束"
+  - "審查文件將運量預測視為主要不確定之一"
+
+open_routing_questions:
+  - "運量不足是否主要來自路廊選擇，而非人口假設"
+
+reframe_log:
+  - from: feasibility
+    to: feasibility + system
+    trigger: "發現運量與土地開發回饋形成 feedback"
