@@ -4,9 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>__TITLE__ · 入口</title>
-<!-- reporter portal-template：上線時只填 report-meta.json，本檔不用改。
+<!-- reporter portal-template（OPTIONAL landing page asset，需要總覽式入口的案子才用，不用就不建）。
+     上線時只填 report-meta.json（最小核心＋有用到的可選欄位），本檔不用改。
      部署：本檔存為工作區 portal.html，同目錄放 report-meta.json，
-     libs/echarts.min.js 與 index.html（站內閱讀器）須在相對路徑可達。 -->
+     libs/（echarts.min.js、reporter-charts.js）與 index.html（站內閱讀器）須在相對路徑可達。 -->
 <style>
 :root{--bg:#f5f5f5;--card:#fff;--ink:#222;--line:#ddd;--acc:#1a73e8;--mut:#666}
 [data-theme=dark]{--bg:#121212;--card:#1e1e1e;--ink:#e0e0e0;--line:#444;--acc:#8ab4f8;--mut:#aaa}
@@ -49,40 +50,13 @@ footer{margin:32px 0 8px;font-size:.8em;color:var(--mut);text-align:center}
 <button id="themeBtn">🌙 深色</button>
 <div class="wrap" id="root"><p>載入中…（請經本地伺服器開啟，見 start_server.bat）</p></div>
 <script src="libs/echarts.min.js"></script>
+<script src="libs/reporter-charts.js"></script>
 <script>
-const PALETTE=['#4477AA','#EE6677','#228833','#CCBB44','#66CCEE','#AA3377','#BBBBBB'];
 const esc=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-function safeUrl(u){u=String(u||'');if(/^(https?:\/\/[^\s"'<>\\]+|\/[^\/\\][^"'<>]*|[^:\/\\?"'<>][^"'<>]*)$/.test(u))return u;return '#';}
+function safeUrl(u){u=String(u||'');if(/^\s*(javascript|data|vbscript|file|blob):/i.test(u))return '#';if(/^(https?:\/\/[^\s"'<>\\]+|\/[^\/\\][^"'<>]*|[^:\/\\?"'<>][^"'<>]*)$/.test(u))return u;return '#'}
 function theme(){return document.documentElement.dataset.theme==='dark'}
 function applyTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem('theme',t);
-  document.getElementById('themeBtn').textContent=t==='dark'?'☀️ 淺色':'🌙 深色';draw()}
-function optionFor(spec,ink){
-  const base={color:PALETTE,title:{text:spec.title||'',left:'center',textStyle:{color:ink,fontSize:15}},
-    tooltip:{trigger:(spec.type==='pie'||spec.type==='donut')?'item':'axis'},
-    textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'}};
-  if(spec.type==='pie'||spec.type==='donut'){
-    const radius=spec.type==='donut'?['42%','65%']:'60%';
-    return Object.assign(base,{legend:{textStyle:{color:ink}},series:[{type:'pie',radius,
-      data:(spec.series[0].data||[]).map(d=>({value:+d.value||0,name:d.name}))}]});
-  }
-  if(spec.type==='radar'){
-    return Object.assign(base,{legend:{textStyle:{color:ink}},
-      radar:{indicator:(spec.indicators||[]).map(n=>({name:n,max:spec.max||5}))},
-      series:[{type:'radar',areaStyle:{opacity:.2},
-        data:(spec.series||[]).map(s=>({name:s.name,value:(s.data||[]).map(Number)}))}]});
-  }
-  if(spec.type==='map'){
-    return Object.assign(base,{tooltip:{trigger:'item'},
-      visualMap:{min:spec.min||0,max:spec.max||100,textStyle:{color:ink}},
-      series:[{type:'map',map:spec.map||'taiwan',roam:true,
-        data:(spec.series[0].data||[]).map(d=>({name:d.name,value:d.value==null?null:+d.value}))}]});
-  }
-  const series=(spec.series||[]).map(s=>({name:s.name,
-    type:spec.type==='line'?'line':'bar',data:(s.data||[]).map(v=>v===null?null:+v)}));
-  return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
-    xAxis:{type:'category',data:spec.x||[],axisLabel:{color:ink}},
-    yAxis:{type:'value',axisLabel:{color:ink}},series});
-}
+  document.getElementById('themeBtn').textContent=t==='dark'?'\u2600\ufe0f \u6dfa\u8272':'\ud83c\udf19 \u6df1\u8272';draw()}
 let META=null;
 function draw(){
   if(!META||typeof echarts==='undefined')return;
@@ -90,7 +64,7 @@ function draw(){
   (META.charts||[]).forEach((c,i)=>{
     const el=document.getElementById('c'+i);if(!el)return;
     const old=echarts.getInstanceByDom(el);if(old)old.dispose();
-    try{echarts.init(el).setOption(optionFor(c,ink))}
+    try{echarts.init(el).setOption(reporterChartOption(c,ink))}
     catch(e){el.outerHTML='<p>圖表載入失敗</p>'}
   });
 }
@@ -140,10 +114,6 @@ async function main(){
         '<li>'+esc(g.item||'')+'（'+esc(g.status||'')+'）</li>').join('')+'</ul>';
     }else{document.getElementById('gaps').innerHTML='<p>無缺口紀錄。</p>'}
   }catch(e){document.getElementById('gaps').innerHTML='<p>無缺口紀錄。</p>'}
-  try{
-    const mr=await fetch('libs/taiwan-counties.geojson');
-    if(mr.ok&&typeof echarts!=='undefined')echarts.registerMap('taiwan',await mr.json());
-  }catch(e){}
   draw();
 }
 main();

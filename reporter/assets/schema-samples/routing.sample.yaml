@@ -10,16 +10,16 @@ narrative_hint: question_cascade
 
 notes:
   - "主線用 feasibility 比較 baseline 與替代方案"
-  - "縣市比較用 comparative 同標準走完"
+  - "對象比較用 comparative 同標準走完"
 
 routing_basis:
-  - "初步資料顯示不同路段有不同財務約束"
-  - "審查文件將運量預測視為主要不確定之一"
+  - "初步資料顯示不同子題適用不同資料口徑"
+  - "審查文件將關鍵假設的不確定列為主要風險之一"
 
 open_routing_questions:
-  - "運量不足是否主要來自路廊選擇，而非人口假設"
+  - "甲現象是否其實主要來自乙因素，而非原先假設的丙因素"
 
 reframe_log:
   - from: feasibility
     to: feasibility + system
-    trigger: "發現運量與土地開發回饋形成 feedback"
+    trigger: "發現關鍵變量與回饋機制形成 loop"

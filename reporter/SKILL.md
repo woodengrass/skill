@@ -11,6 +11,14 @@ description: Use ONLY when the user explicitly requests reporter via /reporter o
 
 定位：research quality + evidence + publishing harness for strong agents。不是固定研究流程（workflow for doing research）。
 
+> **A lightweight research quality and publishing toolkit for strong agents.**
+
+核心哲學（三句，細則各有歸屬，不在別處重述）：
+
+> **Strong constraints on evidence; weak constraints on research path.**（見 `orchestration.md`）
+> **Strong constraints on truth; weak constraints on narrative structure.**（見 `verification.md`、`narrative-models.md`）
+> **Strong constraints on clarity and integrity; weak constraints on format and layout.**（見 `writing.md`、`presentation.md`）
+
 Research freedom + Breadth / Depth targets + Truth invariants + Optional method library + Strict output contract。
 
 ## 輸入
@@ -28,20 +36,11 @@ Research freedom + Breadth / Depth targets + Truth invariants + Optional method 
 
 Agent 自由選擇工具、拆分方式、搜尋策略、agent 數量、執行順序、迭代方式、內部筆記形式。`orchestration.md` 的階段只是常見研究階段的概念分類，不是 mandatory execution order；可自由搜尋、拆題、重排、回頭、並行、reframe、重做。推理模型、敘事模型、視覺模型、artifacts 全部是可選方法庫。
 
-## Epistemic sequencing（決策時機原則）
+## Epistemic sequencing（決策時機原則，細則見 `orchestration.md`）
 
 > **Fix the question early; commit to the research model only after sufficient orientation; keep the research plan revisable as evidence arrives; commit to the final narrative only after the evidence model is stable enough to support it.**
 
 > **問題早定、方法晚定且可改、證據持續更新模型、故事最後才定。**
-
-即：**Stable question, flexible plan, evidence-informed reasoning, late-bound storytelling.**
-
-- Question Contract（要回答什麼、意圖、明確約束、已知範圍／時間／地理／對象、已知歧義）早固定；它不是正式研究計畫。
-- 不熟悉／含糊／多層／快速變化題目先做必要的 Orientation／Reconnaissance，再決定 working research model；熟悉且結構明確題目可直接研究，禁止為形式硬做 reconnaissance。
-- Research plan 是 mutable external state，隨證據可改；reasoning lens 從 candidate → working → stable 演化，即使 stable，重大證據仍可 reframe。
-- Exploratory findings 只產生 candidate hypothesis／question，不自動驗證 load-bearing conclusion。
-- Final narrative 與 reader visual 原則上 late binding：等 load-bearing evidence 與 reasoning model 實質穩定後，才由 Story Architect 決定。
-- 目標是 epistemic readiness，不是 process compliance。細則見 `orchestration.md`、`routing.md`。
 
 ## Truth invariants（不可談判）
 
@@ -53,17 +52,24 @@ Agent 自由選擇工具、拆分方式、搜尋策略、agent 數量、執行�
 
 ## Output contract（強約束在最終輸出）
 
-最終成品必須滿足 `writing.md`、`presentation.md`、`editorial-standards.md` 的全部 hard requirements：真正回答 central question；依人類理解順序組織；load-bearing claims 可追到來源；material uncertainty 就近揭露；分歧與 gaps 不藏；數字口徑正確；quote／scene 不得虛構；不用虛假精確的 confidence／overall score；圖表不誤導；來源與更新狀態可查；有真正的 explanatory structure，不是 research dump。
+最終成品必須滿足 `writing.md` 的寫作鐵律與 `presentation.md` 的 hard invariants：真正回答 central question；依人類理解順序組織；load-bearing claims 可追到來源；material uncertainty 就近揭露；分歧與 gaps 不藏；數字口徑正確；quote／scene 不得虛構；不用虛假精確的 confidence／overall score；圖表不誤導；來源與更新狀態可查；有真正的 explanatory structure，不是 research dump。
 
-## 層索引
+## 開發原則（改 skill 本身時）
 
-- `orchestration.md`：Research Guidance（heuristics＋停搜判斷＋反注入＋git歷史）。
-- `routing.md`：可選的 reasoning-lens working note。
+> **Do not add a new model, artifact, state, role, gate, or output mode unless repeated real-world failures show that the existing system cannot represent the problem cleanly.**
+
+> **沒有真實案例反覆證明現有架構不夠，就不要再增加抽象層。**
+
+## 層索引（每條規則只有一個家，他處只引用）
+
+- `orchestration.md`：研究決策 timing／adaptive research。
+- `routing.md`：reasoning lens 表示法。
 - `artifacts.md`：ledger 與模型 artifact schema（用才守格式）。
 - `reasoning-models.md`：13 種研究方法（方法庫，可組合、可棄用、可自創）。
-- `narrative-models.md`、`visual-models.md`：敘事與視覺方法庫。
+- `narrative-models.md`：storytelling 方法庫。
+- `visual-models.md`：視覺靈感庫。
 - `evidence.md`：Claim→Evidence→Origin、出處獨立性、claim-relative 來源品質。
 - `verification.md`＋`data-verification.md`：結果要求（查什麼，不規定儀式）。
 - `editorial-standards.md`：審稿視角、強弱約束分級。
 - `writing.md`：寫作鐵律（強契約）。
-- `presentation.md`：閱讀器、入口頁、meta/gaps/source-map、圖表。
+- `presentation.md`：呈現原則＋可選工具（強約束只剩 hard invariants）。

@@ -1,6 +1,6 @@
 # Artifacts（可選的機器中間件 schema）
 
-Complex, long-running, multi-agent, high-risk, or incrementally updated research may externalize state using these schemas. 適合時使用，不適合時不要為了符合架構製造一堆空 JSON。簡單題目不用 ledger，直接研究即可。
+Complex, long-running, multi-agent, high-risk, or incrementally updated research may externalize state using these schemas. 適合時使用，不適合時不要為了符合架構製造一堆空 JSON。簡單題目不用 ledger，直接研究即可。原則：simple research 不需要 externalized state；complex／long-running／multi-agent／high-risk／incremental 需要時才 externalize。Skill 暴露 schema，不是要求使用 schema。
 
 唯一強規範：如果 agent 決定使用某 artifact，其格式必須符合以下 schema，確保跨階段互讀。如果沒用 ledger，check.py 不應因此 fail。
 
@@ -123,7 +123,10 @@ confidence: observed／strongly_supported／plausible／speculative。
 `research/orientation.yaml` 最小格式：
 
 ```yaml
-central_question: "..."
+central_question: "..."  # original user question（防 drift，不改寫）
+
+working_questions:  # 研究中演化出的可操作問題（可增刪改，與上者分開）
+  - "..."
 
 scope_notes:
   - "..."

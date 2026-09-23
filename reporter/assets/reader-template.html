@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="__LANG__">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<!-- reporter reader-template: fill __TITLE__, __NAV__, __PDFS__, __HOME__, save as workspace index.html -->
+<!-- reporter reader-template: fill __TITLE__, __LANG__ (default zh-Hant), __NAV__, __PDFS__, __HOME__, save as workspace index.html -->
 <title>__TITLE__</title>
 <style>
 :root{--bg:#f5f5f5;--card:#fff;--ink:#222;--line:#ddd;--acc:#1a73e8;--accbg:#e8f0fe;--warn:#fef7e0;--code:#f0f0f0;--prebg:#263238;--preink:#e0e0e0}
@@ -92,6 +92,7 @@ article details ul{max-height:420px;overflow-y:auto}
 <div id="tip"></div>
 <button id="toTop" title="回頂部">↑</button>
 <script src="libs/echarts.min.js"></script>
+<script src="libs/reporter-charts.js"></script>
 <script>
 // ---------- 目錄 ----------
 const NAV=/*__NAV__: [["Sec",[["Title","dir/file.mdx"]]],...] */[];
@@ -117,7 +118,7 @@ NAV.forEach(([sec,items])=>{
 });
 const hp=document.createElement('h3');hp.textContent='附錄 PDF';nav.appendChild(hp);
 const pu=document.createElement('ul');
-PDFS.forEach(([t,p])=>{const li=document.createElement('li'),a=document.createElement('a');a.textContent=t;a.href=p;a.target='_blank';pu.appendChild(li);li.appendChild(a);});
+PDFS.forEach(([t,p])=>{const li=document.createElement('li'),a=document.createElement('a');a.textContent=t;a.href=safeUrl(p);a.target='_blank';a.rel='noopener';pu.appendChild(li);li.appendChild(a);});
 nav.appendChild(pu);
 // ---------- 主題 ----------
 function applyTheme(t){document.documentElement.dataset.theme=t;localStorage.setItem('theme',t);
@@ -127,13 +128,13 @@ document.getElementById('themeBtn').onclick=()=>{applyTheme(document.documentEle
 document.getElementById('burger').onclick=()=>nav.classList.toggle('open');
 // ---------- Markdown 渲染 ----------
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-function safeUrl(u){u=String(u||'');if(/^(https?:\/\/[^\\s"'<>\\]+|\/[^\/\\][^\\"'<>]*|[^:\/\\?"'<>][^\\"'<>]*)$/.test(u))return u;return '#'}
+function safeUrl(u){u=String(u||'');if(/^\s*(javascript|data|vbscript|file|blob):/i.test(u))return '#';if(/^(https?:\/\/[^\\s"'<>\\]+|\/[^\/\\][^\\"'<>]*|[^:\/\\?"'<>][^\\"'<>]*)$/.test(u))return u;return '#'}
 function inline(s){
   s=esc(s);
   const codes=[];s=s.replace(/`([^`]+)`/g,(m,c)=>{codes.push(c);return ' '+(codes.length-1)+' '});
   s=s.replace(/!\[([^\]]*)\]\(([^)]+)\)/g,(m,a,u)=>'<img alt="'+a+'" src="'+safeUrl(u)+'" style="max-width:100%">');
-  s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,(m,t,u)=>'<a href="'+safeUrl(u)+'" target="_blank">'+t+'</a>');
-  s=s.replace(/(?<![\"'>=])(https?:\/\/[^\s<)"'\]]+)/g,(m,u)=>'<a href="'+safeUrl(u)+'" target="_blank">'+u+'</a>');
+  s=s.replace(/\[([^\]]+)\]\(([^)]+)\)/g,(m,t,u)=>'<a href="'+safeUrl(u)+'" target="_blank" rel="noopener">'+t+'</a>');
+  s=s.replace(/(?<![\"'>=])(https?:\/\/[^\s<)"'\]]+)/g,(m,u)=>'<a href="'+safeUrl(u)+'" target="_blank" rel="noopener">'+u+'</a>');
   s=s.replace(/\[\^(\d+)\]/g,'<a class="cite" href="#src-$1">$1</a>');
   s=s.replace(/\*\*([^*]+)\*\*/g,'<strong>$1</strong>');
   s=s.replace(/(^|[^*\w])\*([^*\n]+)\*/g,'$1<em>$2</em>');
@@ -146,10 +147,10 @@ function renderMD(src){
   src=src.replace(/^---\n(?:.*\n)*?---(\n|$)/,'');
   hid=0;const lines=src.replace(/\r/g,'').split('\n'),out=[];let i=0;
   const isSep=r=>/^\|?[\s:|-]+\|?[\s:|-]*$/.test(r)&&r.includes('-');
-  const head=(lv,t)=>'<h'+lv+' id="h'+(hid)+'">'+inline(t)+'<a class="anc" href="javascript:void(0)" onclick="document.getElementById(\'h'+(hid)+'\').scrollIntoView()">#</a></h'+lv+'>'+(hid++,'');
+  const head=(lv,t)=>'<h'+lv+' id="h'+(hid)+'">'+inline(t)+'<a class="anc" href="#h'+hid+'" onclick="document.getElementById(\'h'+(hid)+'\').scrollIntoView();return false">#</a></h'+lv+'>'+(hid++,'');
   while(i<lines.length){
     const ln=lines[i];
-    if(/^\s*<\/?(details|summary|div)\b[^>]*>\s*$/.test(ln)){out.push(ln);i++;continue}
+    if(/^\s*<\/?(details|summary|div)\b[^>]*>\s*$/.test(ln)){const clean=ln.replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi,'').replace(/(href|src|xlink:href)\s*=\s*"(javascript|data|vbscript)[^"]*"/gi,'$1="#"');out.push(clean);i++;continue}
     const pm=ln.match(/^\s*<!--\s*passage:([A-Za-z0-9]+)\s*-->\s*$/);
     if(pm){out.push('<span class="passage-anchor" data-pid="'+pm[1]+'"></span>');i++;continue}
     if(/^```/.test(ln)){const info=ln.slice(3).trim().toLowerCase();const buf=[];i++;while(i<lines.length&&!/^```/.test(lines[i])){buf.push(lines[i]);i++}i++;
@@ -245,8 +246,8 @@ function buildTOC(){
   const hs=[...view.querySelectorAll('h1,h2,h3')];
   hs.forEach(h=>{
     const a=document.createElement('a');a.textContent=h.textContent.replace(/#$/,'');
-    a.href='javascript:void(0)';a.className=h.tagName==='H3'?'h3':'';
-    a.onclick=()=>document.getElementById(h.id).scrollIntoView({behavior:'smooth'});
+    a.href='#'+h.id;a.className=h.tagName==='H3'?'h3':'';
+    a.onclick=e=>{e.preventDefault();document.getElementById(h.id).scrollIntoView({behavior:'smooth'})};
     box.appendChild(a);
   });
   const obs=new IntersectionObserver(es=>{
@@ -281,70 +282,13 @@ function bindXLinks(curDir){
   });
 }
 // ---------- 圖表 ----------
-function buildOption(spec){
-  const dark=document.documentElement.dataset.theme==='dark';
-  const ink=dark?'#e0e0e0':'#222';
-  const base={color:['#4477AA','#EE6677','#228833','#CCBB44','#66CCEE','#AA3377','#BBBBBB'],
-    title:{text:spec.title||'',left:'center',textStyle:{color:ink,fontSize:15}},
-    tooltip:{trigger:(spec.type==='pie'||spec.type==='donut')?'item':'axis'},textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'}};
-  if(spec.type==='pie'||spec.type==='donut'){
-    const radius=spec.type==='donut'?['42%','65%']:'60%';
-    return Object.assign(base,{legend:{textStyle:{color:ink}},series:[{type:'pie',radius,
-      data:(spec.series[0].data||[]).map(d=>({value:+d.value||0,name:d.name}))}]});
-  }
-  if(spec.type==='radar'){
-    return Object.assign(base,{legend:{textStyle:{color:ink}},
-      radar:{indicator:(spec.indicators||[]).map(n=>({name:n,max:spec.max||5}))},
-      series:[{type:'radar',areaStyle:{opacity:.2},
-        data:(spec.series||[]).map(s=>({name:s.name,value:(s.data||[]).map(Number)}))}]});
-  }
-  if(spec.type==='scatter'){
-    return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
-      xAxis:{type:'value',name:spec.xName||'',axisLabel:{color:ink}},
-      yAxis:{type:'value',name:spec.yName||'',axisLabel:{color:ink}},
-      series:(spec.series||[]).map(s=>({name:s.name,type:'scatter',symbolSize:10,data:s.data||[]}))});
-  }
-  if(spec.type==='heatmap'){
-    const xs=spec.x||[],ys=spec.y||[];
-    let vmax=0;(spec.series[0].data||[]).forEach(d=>{if(d[2]>vmax)vmax=d[2]});
-    return Object.assign(base,{grid:{containLabel:true},
-      xAxis:{type:'category',data:xs,axisLabel:{color:ink,interval:0,rotate:30}},
-      yAxis:{type:'category',data:ys,axisLabel:{color:ink}},
-      visualMap:{min:0,max:vmax||1,calculable:true,textStyle:{color:ink}},
-      series:[{type:'heatmap',data:spec.series[0].data||[],
-        label:{show:true},emphasis:{itemStyle:{shadowBlur:10}}}]});
-  }
-  if(spec.type==='map'){
-    return Object.assign(base,{tooltip:{trigger:'item'},textStyle:{color:ink,fontFamily:'Microsoft JhengHei,sans-serif'},
-      visualMap:{min:spec.min||0,max:spec.max||100,calculable:true,textStyle:{color:ink}},
-      series:[{type:'map',map:spec.map||'taiwan',roam:true,
-        data:(spec.series[0].data||[]).map(d=>({name:d.name,value:d.value==null?null:+d.value}))}]});
-  }
-  const mkMark=()=>spec.markAvg?{markLine:{symbol:'none',data:[{type:'average',name:'平均'}]}}:{};
-  const series=(spec.series||[]).map(s=>{
-    let t='bar';
-    if(spec.type==='line'||spec.type==='area')t='line';
-    if(s.chart==='line')t='line';if(s.chart==='bar')t='bar';
-    const o={name:s.name,type:t,data:(s.data||[]).map(v=>v===null?null:+v)};
-    if(spec.type==='area')o.areaStyle={opacity:.25};
-    if(spec.stack)o.stack='total';
-    if(typeof s.axis==='number')o.yAxisIndex=s.axis;
-    return Object.assign(o,mkMark());
-  });
-  const dual=series.some(s=>s.yAxisIndex===1);
-  const yAx=dual?[{type:'value',axisLabel:{color:ink}},{type:'value',axisLabel:{color:ink}}]:{type:'value',axisLabel:{color:ink}};
-  const cat={type:'category',data:spec.x||[],axisLabel:{color:ink}};
-  const isH=spec.type==='hbar';
-  return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
-    xAxis:isH?{type:'value',axisLabel:{color:ink}}:cat,
-    yAxis:isH?cat:yAx,series});
-}
+
 function initCharts(){
   if(typeof echarts==='undefined')return;
   document.querySelectorAll('#view .echart').forEach(el=>{
     try{
       const old=echarts.getInstanceByDom(el);if(old)old.dispose();
-      echarts.init(el).setOption(buildOption(JSON.parse(el.dataset.spec)));
+      echarts.init(el).setOption(reporterChartOption(JSON.parse(el.dataset.spec)));
     }catch(e){el.outerHTML='<details><summary>圖表載入失敗，顯示原始資料</summary><pre>'+esc(el.dataset.spec)+'</pre></details>'}
   });
 }
@@ -406,7 +350,7 @@ async function lookupSources(){
   }
   if(!hits.length){panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>找不到對應來源</b>選取範圍無匹配段落。';panel.style.display='block';return}
   panel.innerHTML='<button class="x" onclick="this.parentElement.style.display=\'none\'">✕</button><b>可能來源（查表，非生成）</b><ul>'+
-    hits.map(h=>(h.sources||[]).map(s=>'<li><a href="'+safeUrl(s.u)+'" target="_blank">'+esc(s.t)+'</a></li>').join('')).join('')+'</ul>';
+    hits.map(h=>(h.sources||[]).map(s=>'<li><a href="'+safeUrl(s.u)+'" target="_blank" rel="noopener">'+esc(s.t)+'</a></li>').join('')).join('')+'</ul>';
   panel.style.display='block';
 }
 document.addEventListener('keydown',e=>{
@@ -471,13 +415,6 @@ document.getElementById('toTop').onclick=()=>scrollTo(0,0);
 route();
 if(location.protocol==='file:')document.getElementById('banner').style.display='block';
 setTimeout(buildIndex,1500);
-setTimeout(async()=>{
-  try{
-    if(typeof echarts==='undefined')return;
-    const r=await fetch('libs/taiwan-counties.geojson');
-    if(r.ok)echarts.registerMap('taiwan',await r.json());
-  }catch(e){}
-},1500);
 </script>
 </body>
 </html>

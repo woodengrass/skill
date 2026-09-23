@@ -52,6 +52,8 @@
 
 搜尋前只需要固定：user's central question、user intent、explicit constraints、scope that is already clear、time／geography／object（若已明確指定）、known ambiguity。這稱為 Question Contract。它不是正式研究計畫。
 
+Question Contract 固定的是 original user question（使用者原話要回答什麼），不是 working research questions（研究中演化出的可操作問題）。兩層分開：original question 不可偷換，成品最後必須明確回答它；working questions 可因證據發現 false premise、scope problem、segmentation、definition mismatch 而調整（例：原問「為什麼所有記憶體都在漲」→ 工作問題變成「不同品類價格變化是否由不同機制驅動」，結論仍要回答原問題並指出其 premise 哪裡需要修正）。禁止用第一版 working decomposition 取代 original question，也禁止用 original question 的字面措辭鎖死研究框架。
+
 搜尋前不要因為題目表面措辭就鎖死：primary reasoning model、supporting models、complete question tree、final research slices、final hypotheses、final outline、narrative pattern、reader visual structure。
 
 > Initial framing is a hypothesis, not an obligation.
@@ -117,9 +119,7 @@ evidence → schema / reasoning model → working hypothesis
 
 ## Exploratory findings generate hypotheses; they do not automatically verify them
 
-Reconnaissance 可發現 possible cause／mechanism／turning point／stakeholder／pattern／controversy，但它們只應變成 candidate claim／candidate hypothesis／candidate question。Load-bearing conclusion 後續必須用適合的方法驗證（見 `verification.md`）。
-
-避免：搜尋結果讓 agent 想到一個故事 → 把故事當答案 → 之後只找支持它的資料（confirmation trap）。早期 narrative pattern 只可當 question-generation／thinking／exploration aid，early narrative must never become an evidence filter。
+細則見 `verification.md`。另避免 confirmation trap：早期 narrative pattern 只可當思考輔助，不可當 evidence filter（見 `narrative-models.md`）。
 
 ## Reframe trigger（只有 material evidence 才重構）
 
@@ -127,12 +127,9 @@ Reconnaissance 可發現 possible cause／mechanism／turning point／stakeholde
 
 發生時：record trigger、update questions、update relevant claims、update reasoning lens if useful、continue。路由重構記錄見 `routing.md` 的 reframe_log。避免 sunk-cost。
 
-## 四個概念決策閘（decision checks，不是文件、不是順序打勾）
+## 自問句（幫思考，不建檔、不打勾）
 
-- Gate 1 — Question readiness：我真的理解使用者要回答什麼嗎？不知道 → 內部澄清／orientation；知道 → 開始。
-- Gate 2 — Research readiness：我對領域理解夠不夠，能做出不愚蠢的 decomposition？不知道 → reconnaissance；知道 → focused research。
-- Gate 3 — Synthesis readiness：現有 reasoning model 是否已能解釋主要 evidence、alternatives 和 contradictions？不能 → 繼續搜／重建模型；能 → synthesis。
-- Gate 4 — Story readiness：主要結論是否已足夠穩定，可決定最佳閱讀順序？不能 → 不鎖 final story；能 → Story Architect。
+只是提醒 agent 在對的時機問：我真的理解要回答什麼嗎？領域理解夠拆題嗎？現有模型能解釋主要證據與矛盾嗎？結論夠穩可以定閱讀順序嗎？不知道就回頭（澄清／reconnaissance／繼續搜／重建模型），知道就往下走。不要 gate artifacts、status、checklist files。
 
 ## 概念地標（按需取用，非執行順序）
 
@@ -150,11 +147,11 @@ question_tree 等中間件按需生成；其餘按需：causal.json、options.js
 
 ### 方向切片（由 working lenses 啟發，不是固定分工）
 
-複雜題目在有 working lens 後，再看哪些片型值得覆蓋：feasibility 可按 decision／appraisal 或技術 feasibility 分岔（見 `reasoning-models.md`）；causal 適合有現象／候選因／替代假設／反證片；mechanism 適合分層拆解片；investigation 適合時間線／文件鏈／涉事方片；landscape 適合分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的重要檢查轉成片。每片可含：IN／OUT邊界、Research Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。DEEP＝抓全文做 claim 級驗證（含 provenance tracing、反證、entailment）；SCAN＝建覆蓋、找主要 actors／來源／假設，不做完整驗證。有 epistemic 意義的 alternative／challenge／failure／coverage-gap 方向才保留席位，Mechanism、Landscape 沒有反方不硬湊。並行路數按成本與題目自定。寫進 `00_方向.mdx`，然後直接進採集。
+複雜題目在有 working lens 後，再看哪些片型值得覆蓋：feasibility 可按 decision／appraisal 或技術 feasibility 分岔（見 `reasoning-models.md`）；causal 適合有現象／候選因／替代假設／反證片；mechanism 適合分層拆解片；investigation 適合時間線／文件鏈／涉事方片；landscape 適合分類／覆蓋缺口片；其餘模型按 `reasoning-models.md` 的重要檢查轉成片。每片可含：IN／OUT邊界、Research Question、Load-Bearing主張、Disconfirming證據（什麼算推翻）、Stop Rule、Evidence Route（見 `evidence.md`）、DEEP或SCAN。DEEP＝抓全文做 claim 級驗證（含 provenance tracing、反證、entailment）；SCAN＝建覆蓋、找主要 actors／來源／假設，不做完整驗證。有 epistemic 意義的 alternative／challenge／failure／coverage-gap 方向才保留席位，Mechanism、Landscape 沒有反方不硬湊。並行路數、模型選擇、是否用 background task，皆由 agent 按成本與題目自定。方向可記入臨時筆記（如 `00_方向.mdx`），也可以不建檔，直接進採集。
 
 ### 按片採集
 
-每片一路並行 background task，用免費或便宜模型。每路prompt可含：目標、產出檔路徑、coverage target、minimum evidence classes、critical source types、stop conditions、語言（全文統一，禁混用簡繁）、來源優先順序（見 `evidence.md`）、誠實缺口回報。數量只做熔斷與明顯不足提醒，不是完成條件。研究方法、來源、報告結構由 agent 依題目自選。收成後檢查覆蓋度，未達標加搜；登入牆反爬拿不到的，寫缺口不偽造連結。
+每片可獨立並行研究（並行數、模型、是否用 background task 由 agent 依成本與題目自定，不規定免費或便宜模型）。每路prompt可含：目標、產出檔路徑、coverage target、minimum evidence classes、critical source types、stop conditions、語言（全文統一，禁混用簡繁）、來源優先順序（見 `evidence.md`）、誠實缺口回報。數量只做熔斷與明顯不足提醒，不是完成條件。研究方法、來源、報告結構由 agent 依題目自選。收成後檢查覆蓋度，未達標加搜；登入牆反爬拿不到的，寫缺口不偽造連結。
 
 ### 反注入條款（每路研究prompt必備）
 
@@ -172,9 +169,9 @@ Before publication, material gaps must either be resolved or clearly disclosed. 
 
 按 `verification.md` 跑完查核，再進 editorial passes，最後寫總報告（格式見 `writing.md`）。
 
-### Story Architect＋三道編輯（evidence-first input）
+### Story Architect＋編輯視角（review lenses，不是多個 agents）
 
-Story Architect 主要讀：central question、verified／current claims、major unresolved questions、reasoning artifacts、important contradictions、material uncertainty、reader needs；然後才參考 `narrative-models.md` library。不要主要讀最初 routing、資料夾結構、agent 分工、initial outline。決定 angle、揭示順序、開頭、過渡、結尾、刪什麼；研究怎麼分工不決定閱讀順序。之後：Structural Editor（按 `editorial-standards.md` 的 per-model 檢查表＋anti-anchoring 檢查審結構）→ Fact／Standards Editor（數字、引文、出處、時序）→ Line Editor（文字）。
+Story Architect 主要讀：central question、verified／current claims、major unresolved questions、reasoning artifacts、important contradictions、material uncertainty、reader needs；然後才參考 `narrative-models.md` library。不要主要讀最初 routing、資料夾結構、agent 分工、initial outline。決定 angle、揭示順序、開頭、過渡、結尾、刪什麼；研究怎麼分工不決定閱讀順序。之後用三種審稿視角各掃一遍（可同一 agent 做，不要求四個 agent、四份產物、四次完整重寫）：structural（按 `editorial-standards.md` 的 per-model 檢查表＋anti-anchoring 檢查）→ fact／standards（數字、引文、出處、時序）→ line（文字）。
 
 ### 增量更新（工作區已存在才走）
 
@@ -182,4 +179,4 @@ Story Architect 主要讀：central question、verified／current claims、major
 
 ## 收尾
 
-覆蓋不新增、刪空目錄與過期檔、套閱讀器模板、更新總目錄、填 `report-meta.json`。如果工作區使用版本控制，重大研究轉向或重要更新可留下可回溯歷史；不規定 commit cadence，回滾用 git。
+覆蓋不新增、刪空目錄與過期檔、套閱讀器模板（有用 portal 才加 portal）、更新總目錄、填 `report-meta.json`（最小核心＋有用到的可選欄位）。如果工作區使用版本控制，重大研究轉向或重要更新可留下可回溯歷史；不規定 commit cadence，回滾用 git。

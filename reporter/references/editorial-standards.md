@@ -24,7 +24,7 @@ hallucination／unsupported causality／fake source independence／fabricated qu
 
 ## Anti-anchoring（Structural Editor 最後檢查）
 
-> Initial framing is a hypothesis, not an obligation.
+> Initial framing 只是 hypothesis（見 `orchestration.md`），不是 obligation。
 
 - 文章是否只是證明一開始想講的故事？
 - 是否有重要 evidence 因不符合 opening frame 被忽略？

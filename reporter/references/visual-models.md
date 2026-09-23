@@ -6,6 +6,8 @@
 
 causal→causal graph／driver tree；mechanism→flow／block diagram；system→causal-loop／stock-flow；evolution→annotated／branching timeline；feasibility→constraint map／option matrix／sensitivity；comparative→comparison matrix／small multiples；evaluation→logic model／counterfactual plot；investigation→timeline／relationship map；strategy→ecosystem／value chain；distribution→map／group-impact matrix；contested claim→claim/evidence table；scenario→2×2 matrix／signposts；landscape→taxonomy／ecosystem／network／map。
 
+其中 map 圖型已移出核心（模板不再內建圖資；需要地理視覺請自備，見 `presentation.md`）。
+
 禁為有視覺而生成；Each visual should have a clear analytical purpose. Include only the series, annotations, and comparisons needed to support that purpose. 一張圖可同時呈現多個相互依賴的 series（如 revenue／margin／capex），只要它們服務同一 analytical question。
 
 ## Progressive disclosure

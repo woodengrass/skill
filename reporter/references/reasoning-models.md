@@ -36,7 +36,7 @@
 - 可用方法：先找 surprising behavior，再逐條揭 loop，解釋干預為何失效。
 - 重要檢查：延遲、存量變化、反饋方向。
 - 常見錯誤：讀者圖直接丟完整 spaghetti diagram；複雜 system diagram 通常適合 progressive disclosure，以降低讀者認知負擔。
-- 可搭配 narrative：system_reveal；visual：causal-loop／stock-flow／bottleneck map。
+- 可搭配 narrative：puzzle_to_resolution（反直覺行為先擺再解）；visual：causal-loop／stock-flow／bottleneck map。
 
 ## 4. Evolution 演化
 
@@ -81,6 +81,7 @@
 - 可用方法：timeline 分 event_date／publication_date／knowledge_date 三軌，防 hindsight。
 - 重要檢查：文件鏈、涉事方回應、時間線缺口。
 - 常見錯誤：為戲劇性寫成真相唯一；允許高度支持但部分未確認。
+- Publication／ethics gate（涉指名道姓的不法、失職、責任歸屬時）：未尋求回應前，指控不得寫成定論（標單方說法＋記錄已尋求回應或為何未能尋求）；load-bearing 指控須可追到 primary source，轉述不得立為定論；涉事方回應（right_of_reply）同時寫入內文就近位置與 `report-meta.json` 的 trust；無法確認又具傷害性的細節寧可不寫並列入 gaps。查核細則見 `verification.md`。
 - 可搭配 narrative：anomaly_reconstruction；visual：timeline／relationship map。
 
 ## 9. Strategy 戰略
@@ -90,7 +91,7 @@
 - 可用方法：價值鏈→俘獲→互強→複製成本→破局點。
 - 重要檢查：競爭者回應、替代威脅、優勢衰減證據。
 - 常見錯誤：asset list 冒充 moat。
-- 可搭配 narrative：value_to_moat；visual：ecosystem／value chain／attack surface map。
+- 可搭配 narrative：present_past_present（從現狀出發再回頭），或依材料用其他順序；講述時先交代價值在哪產生、誰拿走，再論優勢是單一 asset 還是一組互強活動。visual：ecosystem／value chain／attack surface map。
 
 ## 10. Distribution 分配
 

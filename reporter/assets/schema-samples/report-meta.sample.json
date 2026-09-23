@@ -4,16 +4,16 @@
   "headline_answer": "有條件可行",
   "lang": "zh-Hant",
   "footer": "結論以內文證據為準。",
-  "summary": [{"k": "需求", "v": "成立", "d": "關鍵數字"}],
+  "summary": [{"k": "需求面", "v": "成立", "d": "關鍵數字"}],
   "trust": {
     "cutoff": "2026-09-19",
-    "sources": ["市府統計"],
+    "sources": ["官方統計"],
     "evidence_basis": ["官方原始統計", "正式審查文件"],
-    "unresolved": ["機廠地號待確認"],
+    "unresolved": ["關鍵用地權屬待確認"],
     "right_of_reply": "n/a",
     "changelog": []
   },
-  "kpis": [{"n": "105萬", "l": "人口"}],
+  "kpis": [{"n": "72%", "l": "問卷支持度"}],
   "charts": [],
   "chapters": [{"t": "總報告", "d": "結論", "path": "index.html#/report.mdx"}]
 }
