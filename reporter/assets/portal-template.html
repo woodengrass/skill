@@ -15,8 +15,8 @@
 .hero{background:var(--card);border-radius:12px;padding:36px 32px;box-shadow:0 1px 4px rgba(0,0,0,.12);border-top:6px solid var(--acc)}
 .hero .date{font-size:.85em;color:var(--mut)}
 .hero h1{margin:8px 0;font-size:1.8em}
-.hero .verdict{font-size:1.15em;margin-top:8px}
-.hero .verdict b{color:var(--acc)}
+.hero .headline{font-size:1.15em;margin-top:8px}
+.hero .headline b{color:var(--acc)}
 .btns{margin-top:18px;display:flex;gap:10px;flex-wrap:wrap}
 .btns a{background:var(--acc);color:#fff;text-decoration:none;border-radius:8px;padding:10px 22px;font-size:.95em}
 .btns a.ghost{background:transparent;color:var(--acc);border:1px solid var(--acc)}
@@ -78,7 +78,7 @@ function optionFor(spec,ink){
         data:(spec.series[0].data||[]).map(d=>({name:d.name,value:d.value==null?null:+d.value}))}]});
   }
   const series=(spec.series||[]).map(s=>({name:s.name,
-    type:spec.type==='line'?'line':'bar',data:(s.data||[]).map(v=>v===null?null:+v))}));
+    type:spec.type==='line'?'line':'bar',data:(s.data||[]).map(v=>v===null?null:+v)}));
   return Object.assign(base,{legend:{textStyle:{color:ink}},grid:{containLabel:true},
     xAxis:{type:'category',data:spec.x||[],axisLabel:{color:ink}},
     yAxis:{type:'value',axisLabel:{color:ink}},series});
@@ -99,7 +99,7 @@ function trustHtml(){
   const rows=[
     ['資料截止', t.cutoff||META.date||''],
     ['主要證據', (t.sources||[]).join('、')],
-    ['原始來源比例', t.original_ratio||''],
+    ['主要證據基礎', (t.evidence_basis||[]).join('、')],
     ['未決問題', (t.unresolved||[]).join('；')],
     ['對造回應', t.right_of_reply||''],
     ['更新更正', (t.changelog||[]).join('；')]
@@ -117,7 +117,7 @@ async function main(){
   root.innerHTML=
     '<div class="hero"><div class="date">查證基準日：'+esc(META.date||'')+'</div>'+
     '<h1>'+esc(META.title||'')+'</h1>'+
-    '<div class="verdict">'+esc(META.verdict||'')+'</div>'+
+    '<div class="headline">'+esc(META.headline_answer||'')+'</div>'+
     '<div class="btns"><a href="index.html">進入完整報告</a></div></div>'+
     '<h2>執行摘要</h2><div class="cards">'+(META.summary||[]).map(c=>
       '<div class="card"><div class="k">'+esc(c.k)+'</div><div class="v">'+esc(c.v)+

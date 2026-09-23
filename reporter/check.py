@@ -45,10 +45,10 @@ SAMP = os.path.join(ASSETS, "schema-samples")
 
 
 def check_meta(d, where):
-    for f in ["title", "date", "verdict", "lang", "summary", "trust", "kpis", "charts", "chapters"]:
-        if f not in d:
-            fail(f"{where} meta 缺欄位: {f}")
-    for f in ["cutoff", "sources", "original_ratio", "unresolved", "right_of_reply", "changelog"]:
+    for f in ["title", "date", "headline_answer", "lang", "summary", "trust", "kpis", "charts", "chapters"]:
+        if f not in meta:
+            fail(f"meta sample 缺欄位: {f}")
+    for f in ["cutoff", "sources", "evidence_basis", "unresolved", "right_of_reply", "changelog"]:
         if f not in d.get("trust", {}):
             fail(f"{where} meta trust 缺欄位: {f}")
 
@@ -309,7 +309,7 @@ if "新竹" in pt or "MOTC" in pt:
     fail("portal-template 有特定研究殘留")
 
 # 5. meta schema 一致（presentation 宣稱的欄位 portal 真的讀）
-for field in ["title", "verdict", "summary", "trust", "kpis", "charts", "chapters"]:
+for field in ["title", "headline_answer", "summary", "trust", "kpis", "charts", "chapters"]:
     if field not in pt:
         fail(f"portal 未讀 meta 欄位: {field}")
 

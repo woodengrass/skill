@@ -1,14 +1,14 @@
 {
   "title": "範例題目",
   "date": "2026-09-19",
-  "verdict": "有條件可行",
+  "headline_answer": "有條件可行",
   "lang": "zh-Hant",
   "footer": "結論以內文證據為準。",
   "summary": [{"k": "需求", "v": "成立", "d": "關鍵數字"}],
   "trust": {
     "cutoff": "2026-09-19",
     "sources": ["市府統計"],
-    "original_ratio": "60%",
+    "evidence_basis": ["官方原始統計", "正式審查文件"],
     "unresolved": ["機廠地號待確認"],
     "right_of_reply": "n/a",
     "changelog": []

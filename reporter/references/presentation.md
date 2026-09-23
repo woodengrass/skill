@@ -14,11 +14,12 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 
 ```json
 {
-  "title": "題目", "date": "查證基準日", "verdict": "結論句",
+  "title": "題目", "date": "查證基準日", "headline_answer": "對 central question 最重要的一句回答",
   "lang": "zh-Hant", "footer": "頁尾一句話（缺省用中性預設）",
   "summary": [{"k": "維度", "v": "一句判斷", "d": "關鍵數字"}],
   "trust": {"cutoff": "資料截止日", "sources": ["主要證據"],
-    "original_ratio": "原始來源比例", "unresolved": ["未決問題"],
+    "evidence_basis": ["官方原始統計", "正式審查文件"],
+    "unresolved": ["未決問題"],
     "right_of_reply": "是否取得對造回應（無涉事指控寫 n/a）",
     "changelog": ["更新更正"]},
   "kpis": [{"n": "數字", "l": "標籤"}],
@@ -27,7 +28,9 @@ MDX正源＋站內SPA閱讀器＋入口頁。精緻全放呈現層，正源保�
 }
 ```
 
-入口渲染：執行摘要卡、可信度說明（讀 trust）、KPI、圖表、章節卡、缺口區（讀 `gaps.json`）。完善度分數只放內部／debug，不對讀者顯示百分比。`document.title` 與 `<html lang>` 由 meta 動態設定。meta 的 `lang` 只決定正文語言；reader 與 portal 的 UI chrome 維持繁中，不做三語 UI（真要做才另開 i18n 工程）。
+`headline_answer` 是中性命名：對 central question 最重要的一句回答。不同題型可以是 feasibility 的 conditional judgment、mechanism 的 central explanation、landscape 的 main state of the world、causal 的 main causal synthesis、comparative 的 key difference。
+
+入口渲染：執行摘要卡、可信度說明（讀 trust，顯示「主要證據基礎」而非比例）、KPI、圖表、章節卡、缺口區（讀 `gaps.json`）。完善度分數只放內部／debug，不對讀者顯示百分比。`document.title` 與 `<html lang>` 由 meta 動態設定。meta 的 `lang` 只決定正文語言；reader 與 portal 的 UI chrome 維持繁中，不做三語 UI（真要做才另開 i18n 工程）。
 
 ## 呈現模式（同一證據核多視圖，不要全開）
 
